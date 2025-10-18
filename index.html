@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adivina Adivinador</title>
+<style>
+body{font-family:sans-serif; text-align:center; background: linear-gradient(135deg, #a8edea, #fed6e3); color:#333; margin:0;}
+.hidden{display:none;}
+button{padding:10px 20px; font-size:18px; margin:5px; border:none; border-radius:10px; cursor:pointer; transition: transform 0.2s;}
+button:hover{transform: scale(1.05);}
+.correct{background:#22c55e;color:white;}
+.wrong{background:#ef4444;color:white;}
+.hint{background:#fff7ed;border-left:4px solid #f59e0b;padding:5px;margin:5px;border-radius:6px;display:inline-block;}
+.card{background: linear-gradient(135deg, #ffffff, #fef9ff); padding:20px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.2); margin:20px auto; max-width:400px;}
+input{padding:8px; width:90%; margin:5px; border-radius:6px; border:1px solid #ccc;}
+button:disabled{opacity:0.5; cursor:not-allowed;}
+</style>
+</head>
+<body>
+<div id="start-screen" class="card">
+<h1 style="color:#4f46e5;">🎯 Adivina Adivinador</h1>
+<p style="color:#f59e0b;">Prueba tus acertijos 🧠💫</p>
+<button id="start-btn" style="background:#4f46e5;color:white;">¡Comenzar!</button>
+<button id="add-btn" style="background:#f59e0b;color:white;">Agregar Acertijo</button>
+</div>
+<div id="add-screen" class="card hidden">
+<h2 style="color:#4f46e5;">Agregar nuevo acertijo</h2>
+<input id="new-q" placeholder="Pregunta" />
+<input id="new-a" placeholder="Respuesta correcta" />
+<input id="new-w1" placeholder="Respuesta incorrecta 1" />
+<input id="new-w2" placeholder="Respuesta incorrecta 2" />
+<input id="new-hint" placeholder="Pista (opcional)" />
+<button id="save-btn" style="background:#22c55e;color:white;">Guardar</button>
+<button id="back-btn" style="background:#ef4444;color:white;">Volver</button>
+</div>
+<div id="game-screen" class="card hidden">
+<div id="question" style="font-weight:bold;color:#4f46e5;"></div>
+<div id="choices"></div>
+<p id="message"></p>
+<p id="hint" class="hint hidden"></p>
+<p>Puntaje: <span id="score">0</span> | Vidas: <span id="lives">3</span></p>
+<button id="hint-btn" style="background:#f59e0b;color:white;">Mostrar pista</button>
+<button id="next-btn" disabled style="background:#4f46e5;color:white;">Siguiente</button>
+<button id="back-game-btn" style="background:#ef4444;color:white;">Volver al inicio</button>
+</div>
+<script>
+let puzzles=[
+{q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
+{q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
+{q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'}
+];
+let index=0,score=0,lives=3;
+const startBtn=document.getElementById('start-btn');
+const addBtn=document.getElementById('add-btn');
+const saveBtn=document.getElementById('save-btn');
+const backBtn=document.getElementById('back-btn');
+const backGameBtn=document.getElementById('back-game-btn');
+const nextBtn=document.getElementById('next-btn');
+
+startBtn.onclick=()=>{showScreen('game'); startGame();};
+addBtn.onclick=()=>{showScreen('add');};
+backBtn.onclick=()=>{showScreen('start');};
+backGameBtn.onclick=()=>{showScreen('start');};
+saveBtn.onclick=()=>{
+const q=document.getElementById('new-q').value.trim();
+const a=document.getElementById('new-a').value.trim();
+const w1=document.getElementById('new-w1').value.trim();
+const w2=document.getElementById('new-w2').value.trim();
+const h=document.getElementById('new-hint').value.trim();
+if(q && a && w1 && w2){
+  let choices=[a,w1,w2];
+  choices.sort(()=>Math.random()-0.5);
+  puzzles.push({q:q,c:choices,a:a,hint:h});
+  alert('Acertijo guardado');
+  document.getElementById('new-q').value='';
+  document.getElementById('new-a').value='';
+  document.getElementById('new-w1').value='';
+  document.getElementById('new-w2').value='';
+  document.getElementById('new-hint').value='';
+  showScreen('start');
+} else alert('Completa todos los campos');
+};
+
+function showScreen(scr){
+document.getElementById('start-screen').classList.add('hidden');
+document.getElementById('add-screen').classList.add('hidden');
+document.getElementById('game-screen').classList.add('hidden');
+if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
+else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
+else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
+}
+
+function startGame(){score=0;lives=3;index=0; updateStats(); showQ();}
+function showQ(){const q=puzzles[index]; document.getElementById('message').textContent=''; document.getElementById('hint').classList.add('hidden'); document.getElementById('question').textContent=q.q;
+const cDiv=document.getElementById('choices'); cDiv.innerHTML=''; nextBtn.disabled=true;
+if(q.c.length>0){q.c.forEach(ch=>{const b=document.createElement('button');b.textContent=ch;b.onclick=()=>check(ch); cDiv.appendChild(b);});} else {const i=document.createElement('input'); i.id='answer'; i.placeholder='Respuesta'; i.onkeydown=e=>{if(e.key==='Enter') check(i.value);}; cDiv.appendChild(i);}
+}
+function check(ans){const q=puzzles[index]; const correct=(ans.toLowerCase()==q.a.toLowerCase()); const msg=document.getElementById('message'); if(correct){score+=10; msg.textContent='✅ Correcto!'; msg.className='correct'; confetti();} else{lives--; msg.textContent='❌ Incorrecto'; msg.className='wrong';}
+updateStats(); nextBtn.disabled=false;}
+document.getElementById('next-btn').onclick=()=>{index++; if(index>=puzzles.length){alert('Juego terminado! Puntaje: '+score); showScreen('start');} else showQ();};
+document.getElementById('hint-btn').onclick=()=>{document.getElementById('hint').textContent='💡 Pista: '+puzzles[index].hint; document.getElementById('hint').classList.remove('hidden');}
+function updateStats(){document.getElementById('score').textContent=score; document.getElementById('lives').textContent=lives;}
+function confetti(){const c=document.createElement('div');c.textContent='🎉';c.style.position='absolute';c.style.top=Math.random()*80+'%';c.style.left=Math.random()*80+'%';c.style.fontSize='24px';document.body.appendChild(c);setTimeout(()=>c.remove(),1000);}
+</script>
+</body>
+</html>
