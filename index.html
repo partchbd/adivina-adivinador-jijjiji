@@ -1,84 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Adivina Adivinador</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<title>Divina Adivinador</title>
+
+<!-- Fuente de Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{
+body {
   font-family: 'Poppins', sans-serif;
-  text-align:center;
-  background: url('fondo.png') no-repeat center center fixed;
+  text-align: center;
+  background: url('fondo.jpg') no-repeat center center fixed;
   background-size: cover;
-  backdrop-filter: brightness(0.7);
-  margin:0;
-  padding:0;
+  color: #333;
 }
 
-button{
-  padding:10px 20px;
-  font-size:18px;
-  margin:5px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
+.card {
+  background: rgba(255, 255, 255, 0.85); /* fondo semi-transparente */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+h1.logo {
+  font-weight: 700;
+  font-size: 2.2em;
+  color: #4f46e5;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 5px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-button:hover{
+button:hover {
   transform: scale(1.05);
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-.correct{background:#22c55e;color:white;}
-.wrong{background:#ef4444;color:white;}
+.correct { background:#22c55e; color:white; }
+.wrong { background:#ef4444; color:white; }
 
-.hint{
-  background:#fff7ed;
-  border-left:4px solid #f59e0b;
-  padding:5px;
-  margin:5px;
-  border-radius:6px;
-  display:inline-block;
+.hint {
+  background:#fff7ed; border-left:4px solid #f59e0b;
+  padding:5px; margin:5px; border-radius:6px; display:inline-block;
 }
 
-.card{
-  background: linear-gradient(135deg, #ffffff, #fef9ff);
-  padding:20px;
-  border-radius:15px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
-  margin:20px auto;
-  max-width:400px;
-}
+input { padding:8px; width:90%; margin:5px; border-radius:6px; border:1px solid #ccc; }
+button:disabled { opacity:0.5; cursor:not-allowed; }
 
-input{
-  padding:8px;
-  width:90%;
-  margin:5px;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-
-button:disabled{
-  opacity:0.5;
-  cursor:not-allowed;
-}
-
-.hidden{display:none;}
+.hidden { display:none; }
 </style>
 </head>
 <body>
 
 <!-- Pantalla de inicio -->
 <div id="start-screen" class="card">
-  <img src="logo.png" alt="Logo Adivina Adivinador" style="width:120px; display:block; margin:0 auto 15px auto;">
-  <h1 style="color:#4f46e5;">🎯 Adivina Adivinador</h1>
-  <p style="color:#f59e0b;">Prueba tus acertijos 🧠💫</p>
+  <h1 class="logo">🌟 Divina Adivinador 🌟</h1>
+  <p style="color:#f59e0b;">Prueba tus acertijos 🧠</p>
   <button id="start-btn" style="background:#4f46e5;color:white;">¡Comenzar!</button>
   <button id="add-btn" style="background:#f59e0b;color:white;">Agregar Acertijo</button>
 </div>
 
-<!-- Pantalla para agregar acertijo -->
+<!-- Pantalla de agregar acertijo -->
 <div id="add-screen" class="card hidden">
   <h2 style="color:#4f46e5;">Agregar nuevo acertijo</h2>
   <input id="new-q" placeholder="Pregunta" />
@@ -109,7 +103,7 @@ let puzzles=[
   {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'}
 ];
 
-let index=0, score=0, lives=3;
+let index=0,score=0,lives=3;
 
 const startBtn=document.getElementById('start-btn');
 const addBtn=document.getElementById('add-btn');
@@ -117,7 +111,6 @@ const saveBtn=document.getElementById('save-btn');
 const backBtn=document.getElementById('back-btn');
 const backGameBtn=document.getElementById('back-game-btn');
 const nextBtn=document.getElementById('next-btn');
-const hintBtn=document.getElementById('hint-btn');
 
 startBtn.onclick=()=>{showScreen('game'); startGame();};
 addBtn.onclick=()=>{showScreen('add');};
@@ -154,17 +147,15 @@ function showScreen(scr){
 }
 
 function startGame(){
-  score=0;lives=3;index=0;
-  updateStats();
+  score=0;lives=3;index=0; 
+  updateStats(); 
   showQ();
 }
 
 function showQ(){
-  const q=puzzles[index];
-  document.getElementById('message').textContent='';
-  if(q.hint) hintBtn.style.display='inline-block';
-  else hintBtn.style.display='none';
-  document.getElementById('hint').classList.add('hidden');
+  const q=puzzles[index]; 
+  document.getElementById('message').textContent=''; 
+  document.getElementById('hint').classList.add('hidden'); 
   document.getElementById('question').textContent=q.q;
 
   const cDiv=document.getElementById('choices'); 
@@ -175,7 +166,7 @@ function showQ(){
     q.c.forEach(ch=>{
       const b=document.createElement('button');
       b.textContent=ch;
-      b.onclick=()=>check(ch); 
+      b.onclick=()=>check(ch);
       cDiv.appendChild(b);
     });
   } else {
@@ -185,22 +176,26 @@ function showQ(){
     i.onkeydown=e=>{if(e.key==='Enter') check(i.value);}; 
     cDiv.appendChild(i);
   }
+
+  // Mostrar botón de pista solo si hay
+  document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
 }
 
 function check(ans){
   const q=puzzles[index]; 
   const correct=(ans.toLowerCase()==q.a.toLowerCase()); 
   const msg=document.getElementById('message'); 
+
   if(correct){
     score+=10; 
-    msg.textContent='✅ Correcto!'; 
-    msg.className='correct'; 
+    msg.textContent='✅ Correcto!';
+    msg.className='correct';
     confetti();
-  } else {
+  } else{
     lives--; 
-    msg.textContent='❌ Incorrecto'; 
-    msg.className='wrong'; 
-    if(lives<=0){
+    msg.textContent='❌ Incorrecto';
+    msg.className='wrong';
+    if(lives <= 0){
       alert('¡Has perdido todas tus vidas! Puntaje: ' + score);
       showScreen('start');
       return;
@@ -210,7 +205,7 @@ function check(ans){
   nextBtn.disabled=false;
 }
 
-nextBtn.onclick=()=>{
+document.getElementById('next-btn').onclick=()=>{
   index++; 
   if(index>=puzzles.length){
     alert('Juego terminado! Puntaje: '+score);
@@ -218,13 +213,10 @@ nextBtn.onclick=()=>{
   } else showQ();
 };
 
-hintBtn.onclick=()=>{
-  const h=puzzles[index].hint;
-  if(h){
-    document.getElementById('hint').textContent='💡 Pista: '+h;
-    document.getElementById('hint').classList.remove('hidden');
-  }
-};
+document.getElementById('hint-btn').onclick=()=>{
+  document.getElementById('hint').textContent='💡 Pista: '+puzzles[index].hint; 
+  document.getElementById('hint').classList.remove('hidden');
+}
 
 function updateStats(){
   document.getElementById('score').textContent=score; 
