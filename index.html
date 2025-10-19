@@ -9,13 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
+bbody {
   font-family: 'Poppins', sans-serif;
   text-align: center;
-  background: url('fondo.jpg') no-repeat center center fixed;
-  background-size: cover;
+  background: #345494; /* color neutro para todas las pantallas */
   color: #333;
 }
+
 
 .card {
   background: rgba(255, 255, 255, 0.85); /* fondo semi-transparente */
@@ -25,6 +25,16 @@ body {
   margin: 20px auto;
   max-width: 400px;
 }
+
+
+/* Fondo exclusivo para la pantalla de inicio */
+#start-screen {
+background: url('img/ghh.jpeg') no-repeat center center;
+  background-size: cover;
+  color: white; /* para que el texto resalte sobre la imagen */
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+}
+
 
 h1.logo {
   font-weight: 700;
