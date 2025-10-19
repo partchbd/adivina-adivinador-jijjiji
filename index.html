@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Divina Adivinador</title>
-
-<!-- Fuente de Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body {
   font-family: 'Poppins', sans-serif;
+  margin: 0;
   text-align: center;
   background: url('ghh.jpeg') no-repeat center center fixed;
   background-size: cover;
-  color: #fff;
-  margin: 0;
-  padding: 0;
+  color: white;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
 }
 
-/* Tarjetas */
+/* Pantallas y estructura */
+.hidden { display: none; }
+
 .card {
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.6);
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   margin: 20px auto;
   max-width: 420px;
-  width: 90%;
   color: white;
 }
 
-/* Pantalla inicio ocupa toda la ventana (opcional si quieres) */
 #start-screen {
   min-height: 100vh;
   display: flex;
@@ -40,301 +37,219 @@ body {
   align-items: center;
 }
 
-.logo {
+#start-screen .logo {
   font-size: 3em;
   font-weight: 800;
-  margin-bottom: 10px;
-  text-shadow: 3px 3px 8px rgba(0,0,0,0.8);
+  margin-bottom: 20px;
 }
 
-p, h2 { text-shadow: 2px 2px 6px rgba(0,0,0,0.7); }
+#start-screen p {
+  font-size: 1.5em;
+  margin-bottom: 30px;
+}
 
-/* botones */
-button {
-  padding: 10px 18px;
-  margin: 6px;
-  border-radius: 10px;
+#start-screen button {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  margin: 10px;
   border: none;
+  border-radius: 15px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform .15s, box-shadow .15s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-button:hover { transform: scale(1.03); box-shadow: 0 6px 14px rgba(0,0,0,0.4); }
-#start-btn { background:#4f46e5; color:white; }
-#add-btn { background:#f59e0b; color:white; }
-#hint-btn { background:#f59e0b; color:black; }
-#next-btn { background:#4f46e5; color:white; }
-#back-btn, #back-game-btn { background:#ef4444; color:white; }
-#save-btn { background:#22c55e; color:white; }
 
-/* mensajes */
-.correct { background:#22c55e; color:white; padding:6px 10px; border-radius:8px; display:inline-block; }
-.wrong { background:#ef4444; color:white; padding:6px 10px; border-radius:8px; display:inline-block; }
+#start-screen button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+#start-btn { background: #4f46e5; color: white; }
+#add-btn { background: #f59e0b; color: white; }
+
+#add-screen input {
+  padding: 8px;
+  width: 90%;
+  margin: 5px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+#add-screen button { margin: 5px; padding: 10px 20px; }
+
+.correct { background:#22c55e; color:white; }
+.wrong { background:#ef4444; color:white; }
 
 .hint {
-  background: rgba(255,255,255,0.9);
-  color: #111;
-  padding: 6px 10px;
-  border-radius: 8px;
-  display: inline-block;
-  margin: 8px 0;
+  background:#fff7ed;
+  border-left:4px solid #f59e0b;
+  padding:5px;
+  margin:5px;
+  border-radius:6px;
+  display:inline-block;
+  color:black;
 }
 
-/* inputs y utilidades */
-input { padding:8px; width:90%; margin:6px 0; border-radius:6px; border:none; outline:none; }
-.hidden { display:none; }
-button:disabled { opacity:.5; cursor:not-allowed; }
+button:disabled { opacity:0.5; cursor:not-allowed; }
 </style>
 </head>
+
 <body>
+  <!-- Pantalla de inicio -->
+  <div id="start-screen">
+    <div class="logo">✨ Divina Adivinador ✨</div>
+    <p>¡Pon a prueba tu ingenio con estos acertijos!</p>
+    <button id="start-btn">Comenzar</button>
+    <button id="add-btn">Agregar Adivinanza</button>
+  </div>
 
-<!-- Pantalla de inicio -->
-<div id="start-screen" class="card">
-  <h1 class="logo">🌟 Divina Adivinador 🌟</h1>
-  <p style="color:#f59e0b;">Prueba tus acertijos 🧠</p>
-  <button id="start-btn">¡Comenzar!</button>
-  <button id="add-btn">Agregar Acertijo</button>
-</div>
-
-<!-- Pantalla de agregar acertijo -->
-<div id="add-screen" class="card hidden">
-  <h2 style="color:#c7d2fe;">Agregar nuevo acertijo</h2>
-  <input id="new-q" placeholder="Pregunta" />
-  <input id="new-a" placeholder="Respuesta correcta" />
-  <input id="new-w1" placeholder="Respuesta incorrecta 1" />
-  <input id="new-w2" placeholder="Respuesta incorrecta 2" />
-  <input id="new-hint" placeholder="Pista (opcional)" />
-  <div style="margin-top:8px;">
+  <!-- Pantalla para agregar acertijos -->
+  <div id="add-screen" class="card hidden">
+    <h2>Agregar Adivinanza</h2>
+    <input type="text" id="new-riddle" placeholder="Escribe la adivinanza">
+    <input type="text" id="new-answer" placeholder="Respuesta correcta">
     <button id="save-btn">Guardar</button>
     <button id="back-btn">Volver</button>
   </div>
-</div>
 
-<!-- Pantalla de juego -->
-<div id="game-screen" class="card hidden">
-  <div id="progress" style="font-weight:600; margin-bottom:8px;"></div>
-  <div id="question" style="font-weight:bold;color:#c7d2fe; margin-bottom:12px;"></div>
-  <div id="choices" style="display:flex; flex-direction:column; gap:8px; align-items:center; margin-bottom:10px;"></div>
-  <div id="message" style="min-height:26px; margin-bottom:8px;"></div>
-  <p id="hint" class="hint hidden"></p>
-  <p style="margin-top:8px;">Puntaje: <span id="score">0</span> | Vidas: <span id="lives">💖💖💖</span></p>
-  <div style="margin-top:8px;">
-    <button id="hint-btn">Mostrar pista</button>
-    <button id="next-btn" disabled>Siguiente</button>
-    <button id="back-game-btn">Volver al inicio</button>
+  <!-- Pantalla del juego -->
+  <div id="game-screen" class="card hidden">
+    <h2 id="riddle-text"></h2>
+    <input type="text" id="answer-input" placeholder="Tu respuesta...">
+    <div id="hint" class="hint hidden"></div>
+    <div style="margin-top: 10px;">
+      <button id="check-btn">Comprobar</button>
+      <button id="hint-btn">Pista</button>
+      <button id="next-btn" disabled>Siguiente</button>
+    </div>
+    <p id="stats"></p>
   </div>
-</div>
 
 <script>
-/* --- Mantuvimos exactamente tus acertijos originales (sin cambios) --- */
-let puzzles=[
-  {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
-  {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
-  {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
-  {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.',c:['pera','manzana','plátano'],a:'pera',hint:'Es una fruta'},
-  {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?',c:['1 minuto','5 minutos','10 minutos'],a:'5 minutos',hint:'Piensa en la proporción'},
-  {q:'Tiene agujas pero no pincha. ¿Qué es?',c:['reloj','erizo','pino'],a:'reloj',hint:'Mide el tiempo'},
-  {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?',c:['hoyo','caja','montaña'],a:'hoyo',hint:'Piensa en cavar'},
-  {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?',c:['planta','fuego','nube'],a:'fuego',hint:'Consume oxígeno'},
-  {q:'Tiene llaves pero no abre puertas. ¿Qué es?',c:['piano','candado','mapa'],a:'piano',hint:'Se toca con las manos'},
-  {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
-  {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
+const riddles = [
+  { question: "Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.", answer: "pera", hint: "Es una fruta." },
+  { question: "Vuelo de noche, duermo en el día y nunca verás plumas en ala mía.", answer: "murciélago", hint: "Animal nocturno." },
+  { question: "Ladra sin boca, corre sin pies, y nunca entra en la casa.", answer: "viento", hint: "Lo sientes, pero no lo ves." },
+  { question: "Tiene agujas y no cose, tiene números y no lee.", answer: "reloj", hint: "Mide el tiempo." },
+  { question: "Agua pasa por mi casa, cate de mi corazón.", answer: "aguacate", hint: "Es una fruta verde." },
+  { question: "Oro parece, plata no es. Quien no lo adivine, bien tonto es.", answer: "plátano", hint: "Se pela para comer." }
 ];
 
-let index=0, score=0, lives=3;
+let current = 0;
+let correct = 0;
 
-/* Elementos */
-const startBtn=document.getElementById('start-btn');
-const addBtn=document.getElementById('add-btn');
-const saveBtn=document.getElementById('save-btn');
-const backBtn=document.getElementById('back-btn');
-const backGameBtn=document.getElementById('back-game-btn');
-const nextBtn=document.getElementById('next-btn');
-const hintBtn=document.getElementById('hint-btn');
+const startScreen = document.getElementById('start-screen');
+const addScreen = document.getElementById('add-screen');
+const gameScreen = document.getElementById('game-screen');
+const riddleText = document.getElementById('riddle-text');
+const answerInput = document.getElementById('answer-input');
+const checkBtn = document.getElementById('check-btn');
+const hintDiv = document.getElementById('hint');
+const hintBtn = document.getElementById('hint-btn');
+const nextBtn = document.getElementById('next-btn');
+const stats = document.getElementById('stats');
 
-startBtn.onclick=()=>{ showScreen('game'); startGame(); };
-addBtn.onclick=()=>{ showScreen('add'); };
-backBtn.onclick=()=>{ showScreen('start'); };
-backGameBtn.onclick=()=>{ showScreen('start'); };
-
-saveBtn.onclick=()=>{
-  const q=document.getElementById('new-q').value.trim();
-  const a=document.getElementById('new-a').value.trim();
-  const w1=document.getElementById('new-w1').value.trim();
-  const w2=document.getElementById('new-w2').value.trim();
-  const h=document.getElementById('new-hint').value.trim();
-  if(q && a && w1 && w2){
-    let choices=[a,w1,w2];
-    choices.sort(()=>Math.random()-0.5);
-    puzzles.push({q:q,c:choices,a:a,hint:h});
-    alert('Acertijo guardado');
-    document.getElementById('new-q').value='';
-    document.getElementById('new-a').value='';
-    document.getElementById('new-w1').value='';
-    document.getElementById('new-w2').value='';
-    document.getElementById('new-hint').value='';
-    showScreen('start');
-  } else alert('Completa todos los campos');
-};
-
-/* Muestra/oculta pantallas */
-function showScreen(scr){
-  document.getElementById('start-screen').classList.add('hidden');
-  document.getElementById('add-screen').classList.add('hidden');
-  document.getElementById('game-screen').classList.add('hidden');
-  document.getElementById(scr+'-screen').classList.remove('hidden');
+function showScreen(screen) {
+  [startScreen, addScreen, gameScreen].forEach(s => s.classList.add('hidden'));
+  screen.classList.remove('hidden');
 }
 
-/* Inicia juego: resetea y mezcla preguntas */
-function startGame(){
-  score=0; lives=3; index=0;
-  // mezcla las preguntas para que queden revueltas cada partida
-  puzzles.sort(()=>Math.random()-0.5);
+function updateStats() {
+  stats.textContent = `Aciertos: ${correct} / ${riddles.length}`;
+}
+
+function showRiddle() {
+  if (current < riddles.length) {
+    riddleText.textContent = riddles[current].question;
+    answerInput.value = "";
+    answerInput.classList.remove("correct", "wrong");
+    hintDiv.classList.add("hidden");
+    hintDiv.textContent = "";
+    nextBtn.disabled = true;
+  } else {
+    riddleText.textContent = "🎉 ¡Has terminado todos los acertijos!";
+    answerInput.style.display = "none";
+    hintBtn.style.display = "none";
+    checkBtn.style.display = "none";
+    nextBtn.textContent = "Volver al inicio";
+    nextBtn.disabled = false;
+  }
   updateStats();
-  showQ();
 }
 
-/* Muestra la pregunta actual y resetea estados */
-function showQ(){
-  // si ya no hay más preguntas, terminar
-  if(index >= puzzles.length){
-    alert('¡Juego terminado! Puntaje: '+score);
-    showScreen('start');
-    return;
-  }
+checkBtn.addEventListener("click", () => {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  const correctAnswer = riddles[current].answer.toLowerCase();
 
-  const q = puzzles[index];
-
-  // limpiar mensaje y pista (IMPORTANTE: evita que la pista quede en la siguiente pregunta)
-  const msg = document.getElementById('message');
-  msg.textContent = '';
-  msg.className = '';
-  const hintEl = document.getElementById('hint');
-  hintEl.textContent = '';
-  hintEl.classList.add('hidden');
-
-  // pregunta
-  document.getElementById('question').textContent = q.q;
-  document.getElementById('progress').textContent = `Pregunta ${index+1} de ${puzzles.length}`;
-
-  // opciones: crear botones y asegurarnos de que estén habilitados
-  const cDiv = document.getElementById('choices');
-  cDiv.innerHTML = '';
-  nextBtn.disabled = true;
-
-  if(q.c && q.c.length > 0){
-    q.c.forEach(choiceText => {
-      const btn = document.createElement('button');
-      btn.textContent = choiceText;
-      btn.style.minWidth = '200px';
-      btn.onclick = () => check(choiceText, btn);
-      btn.disabled = false;
-      cDiv.appendChild(btn);
-    });
+  if (userAnswer === correctAnswer) {
+    answerInput.classList.add("correct");
+    correct++;
   } else {
-    // si en algún momento tienes preguntas de respuesta libre
-    const input = document.createElement('input');
-    input.id = 'free-answer';
-    input.placeholder = 'Escribe tu respuesta y presiona Enter';
-    input.onkeydown = (e) => { if(e.key === 'Enter') check(input.value, input); };
-    cDiv.appendChild(input);
-  }
-}
-
-/* Verifica respuesta:
-   - bloquea botones de opción al responder
-   - marca correcto/incorrecto visualmente
-   - permite avanzar con Siguiente aunque la respuesta sea incorrecta
-   - borra/oculta pista en showQ() siguiente (ya lo hacemos allí)
-*/
-function check(ans, btnElement){
-  const q = puzzles[index];
-  const msg = document.getElementById('message');
-
-  // Deshabilitar todas las opciones inmediatamente para evitar múltiples clics
-  const optionButtons = document.querySelectorAll('#choices button');
-  optionButtons.forEach(b => b.disabled = true);
-
-  // Si el elemento es un input (respuesta libre), obtener su valor
-  if(btnElement && btnElement.tagName === 'INPUT'){
-    // btnElement es el input
-    ans = btnElement.value;
-  }
-
-  if(String(ans).toLowerCase().trim() === String(q.a).toLowerCase().trim()){
-    // correcto
-    score += 10;
-    msg.textContent = '✅ Correcto!';
-    msg.className = 'correct';
-    if(btnElement && btnElement.tagName === 'BUTTON') btnElement.classList.add('correct');
-    confetti();
-  } else {
-    // incorrecto: restar una vida, mostrar mensaje y marcar el botón (si existe)
-    lives -= 1;
-    msg.textContent = '❌ Incorrecto';
-    msg.className = 'wrong';
-    if(btnElement && btnElement.tagName === 'BUTTON') btnElement.classList.add('wrong');
-    // importante: no forzar a poner la respuesta correcta, simplemente habilitamos "Siguiente"
+    answerInput.classList.add("wrong");
   }
 
   updateStats();
-
-  // Si se acabaron las vidas, terminar la partida y volver al inicio
-  if(lives <= 0){
-    alert('¡Has perdido todas tus vidas! Puntaje: '+score);
-    showScreen('start');
-    return;
-  }
-
-  // Mostrar botón siguiente para que el jugador pase a la próxima pregunta (da libertad)
   nextBtn.disabled = false;
-}
+});
 
-/* Avanzar a la siguiente pregunta al hacer click en "Siguiente" */
-nextBtn.onclick = () => {
-  // antes de avanzar, limpiar posible pista visible (redundante con showQ pero útil)
-  const hintEl = document.getElementById('hint');
-  hintEl.textContent = '';
-  hintEl.classList.add('hidden');
+nextBtn.addEventListener("click", () => {
+  // Limpiar pista siempre al avanzar
+  hintDiv.textContent = "";
+  hintDiv.classList.add("hidden");
 
-  index++;
-  showQ();
-};
-
-/* Mostrar pista sin que se "pegue" en la siguiente pregunta (se limpia en showQ) */
-hintBtn.onclick = () => {
-  const q = puzzles[index];
-  const hintEl = document.getElementById('hint');
-  if(q.hint && q.hint.trim() !== ''){
-    hintEl.textContent = '💡 Pista: ' + q.hint;
-    hintEl.classList.remove('hidden');
+  if (current < riddles.length - 1) {
+    current++;
+    showRiddle();
   } else {
-    hintEl.textContent = 'No hay pista para este acertijo.';
-    hintEl.classList.remove('hidden');
+    showScreen(startScreen);
+    current = 0;
+    correct = 0;
+    answerInput.style.display = "";
+    hintBtn.style.display = "";
+    checkBtn.style.display = "";
+    nextBtn.textContent = "Siguiente";
+    showRiddle();
   }
-};
+});
 
-/* Actualiza puntaje y vidas (corazones) */
-function updateStats(){
-  document.getElementById('score').textContent = score;
-  document.getElementById('lives').textContent = '💖'.repeat(Math.max(0,lives));
-}
+hintBtn.addEventListener("click", () => {
+  hintDiv.textContent = riddles[current].hint;
+  hintDiv.classList.remove("hidden");
+});
 
-/* Confetti simple */
-function confetti(){
-  const c = document.createElement('div');
-  c.textContent = '🎉';
-  c.style.position = 'absolute';
-  c.style.top = Math.random()*80 + '%';
-  c.style.left = Math.random()*80 + '%';
-  c.style.fontSize = (14 + Math.random()*18) + 'px';
-  document.body.appendChild(c);
-  setTimeout(()=>c.remove(), 900);
-}
+document.getElementById("start-btn").addEventListener("click", () => {
+  showScreen(gameScreen);
+  current = 0;
+  correct = 0;
+  showRiddle();
+});
 
-/* Mostrar inicio por defecto */
-showScreen('start');
+document.getElementById("add-btn").addEventListener("click", () => {
+  showScreen(addScreen);
+});
+
+document.getElementById("back-btn").addEventListener("click", () => {
+  showScreen(startScreen);
+});
+
+document.getElementById("save-btn").addEventListener("click", () => {
+  const newRiddle = document.getElementById("new-riddle").value.trim();
+  const newAnswer = document.getElementById("new-answer").value.trim();
+
+  if (newRiddle && newAnswer) {
+    riddles.push({ question: newRiddle, answer: newAnswer, hint: "Sin pista 😅" });
+    alert("¡Adivinanza agregada!");
+    document.getElementById("new-riddle").value = "";
+    document.getElementById("new-answer").value = "";
+    showScreen(startScreen);
+  } else {
+    alert("Completa ambos campos para guardar.");
+  }
+});
+
+showScreen(startScreen);
 </script>
-
 </body>
 </html>
+
