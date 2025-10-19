@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Divina Adivinador</title>
-
 <style>
 body {
   font-family: 'Poppins', sans-serif;
@@ -16,7 +15,7 @@ body {
   text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
 }
 
-/* Pantallas y estructura */
+/* Pantallas */
 .hidden { display: none; }
 
 .card {
@@ -94,39 +93,40 @@ body {
 button:disabled { opacity:0.5; cursor:not-allowed; }
 </style>
 </head>
-
 <body>
-  <!-- Pantalla de inicio -->
-  <div id="start-screen">
-    <div class="logo">✨ Divina Adivinador ✨</div>
-    <p>¡Pon a prueba tu ingenio con estos acertijos!</p>
-    <button id="start-btn">Comenzar</button>
-    <button id="add-btn">Agregar Adivinanza</button>
-  </div>
 
-  <!-- Pantalla para agregar acertijos -->
-  <div id="add-screen" class="card hidden">
-    <h2>Agregar Adivinanza</h2>
-    <input type="text" id="new-riddle" placeholder="Escribe la adivinanza">
-    <input type="text" id="new-answer" placeholder="Respuesta correcta">
-    <button id="save-btn">Guardar</button>
-    <button id="back-btn">Volver</button>
-  </div>
+<!-- Pantalla de inicio -->
+<div id="start-screen" class="card">
+  <div class="logo">✨ Divina Adivinador ✨</div>
+  <p>¡Pon a prueba tu ingenio con estos acertijos!</p>
+  <button id="start-btn">Comenzar</button>
+  <button id="add-btn">Agregar Adivinanza</button>
+</div>
 
-  <!-- Pantalla del juego -->
-  <div id="game-screen" class="card hidden">
-    <h2 id="riddle-text"></h2>
-    <input type="text" id="answer-input" placeholder="Tu respuesta...">
-    <div id="hint" class="hint hidden"></div>
-    <div style="margin-top: 10px;">
-      <button id="check-btn">Comprobar</button>
-      <button id="hint-btn">Pista</button>
-      <button id="next-btn" disabled>Siguiente</button>
-    </div>
-    <p id="stats"></p>
+<!-- Pantalla para agregar acertijos -->
+<div id="add-screen" class="card hidden">
+  <h2>Agregar Adivinanza</h2>
+  <input type="text" id="new-riddle" placeholder="Escribe la adivinanza">
+  <input type="text" id="new-answer" placeholder="Respuesta correcta">
+  <button id="save-btn">Guardar</button>
+  <button id="back-btn">Volver</button>
+</div>
+
+<!-- Pantalla del juego -->
+<div id="game-screen" class="card hidden">
+  <h2 id="riddle-text"></h2>
+  <input type="text" id="answer-input" placeholder="Tu respuesta...">
+  <div id="hint" class="hint hidden"></div>
+  <div style="margin-top: 10px;">
+    <button id="check-btn">Comprobar</button>
+    <button id="hint-btn">Pista</button>
+    <button id="next-btn" disabled>Siguiente</button>
   </div>
+  <p id="stats"></p>
+</div>
 
 <script>
+// Arreglo de acertijos
 const riddles = [
   { question: "Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.", answer: "pera", hint: "Es una fruta." },
   { question: "Vuelo de noche, duermo en el día y nunca verás plumas en ala mía.", answer: "murciélago", hint: "Animal nocturno." },
@@ -167,11 +167,15 @@ function showRiddle() {
     hintDiv.classList.add("hidden");
     hintDiv.textContent = "";
     nextBtn.disabled = true;
+    answerInput.style.display = "";
+    checkBtn.style.display = "";
+    hintBtn.style.display = "";
+    nextBtn.textContent = "Siguiente";
   } else {
     riddleText.textContent = "🎉 ¡Has terminado todos los acertijos!";
     answerInput.style.display = "none";
-    hintBtn.style.display = "none";
     checkBtn.style.display = "none";
+    hintBtn.style.display = "none";
     nextBtn.textContent = "Volver al inicio";
     nextBtn.disabled = false;
   }
@@ -181,23 +185,19 @@ function showRiddle() {
 checkBtn.addEventListener("click", () => {
   const userAnswer = answerInput.value.trim().toLowerCase();
   const correctAnswer = riddles[current].answer.toLowerCase();
-
   if (userAnswer === correctAnswer) {
     answerInput.classList.add("correct");
     correct++;
   } else {
     answerInput.classList.add("wrong");
   }
-
   updateStats();
   nextBtn.disabled = false;
 });
 
 nextBtn.addEventListener("click", () => {
-  // Limpiar pista siempre al avanzar
   hintDiv.textContent = "";
   hintDiv.classList.add("hidden");
-
   if (current < riddles.length - 1) {
     current++;
     showRiddle();
@@ -205,10 +205,6 @@ nextBtn.addEventListener("click", () => {
     showScreen(startScreen);
     current = 0;
     correct = 0;
-    answerInput.style.display = "";
-    hintBtn.style.display = "";
-    checkBtn.style.display = "";
-    nextBtn.textContent = "Siguiente";
     showRiddle();
   }
 });
@@ -236,7 +232,6 @@ document.getElementById("back-btn").addEventListener("click", () => {
 document.getElementById("save-btn").addEventListener("click", () => {
   const newRiddle = document.getElementById("new-riddle").value.trim();
   const newAnswer = document.getElementById("new-answer").value.trim();
-
   if (newRiddle && newAnswer) {
     riddles.push({ question: newRiddle, answer: newAnswer, hint: "Sin pista 😅" });
     alert("¡Adivinanza agregada!");
@@ -248,8 +243,11 @@ document.getElementById("save-btn").addEventListener("click", () => {
   }
 });
 
+// Inicializamos mostrando la pantalla de inicio
 showScreen(startScreen);
 </script>
+
 </body>
 </html>
+
 
