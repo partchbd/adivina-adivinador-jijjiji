@@ -5,286 +5,257 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Divina Adivinador</title>
 
+<!-- Fuente de Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    background: url('ghh.jpeg') no-repeat center center;
-    background-size: cover;
-    color: #fff;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  background: #345494; /* color neutro para todas las pantallas */
+  color: #333;
 }
 
-/* Pantallas en “tarjetas” */
+
 .card {
-    background: rgba(0,0,0,0.6);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    margin: 20px auto;
-    max-width: 400px;
+  background: rgba(255, 255, 255, 0.85); /* fondo semi-transparente */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  margin: 20px auto;
+  max-width: 400px;
 }
 
-/* Ocultar elementos (¡CORRECCIÓN CLAVE!) */
-/* Se añade !important para asegurar que sobrescribe los estilos fijos de start-screen */
-.hidden { display: none !important; }
 
-/* Botones generales */
+/* Fondo exclusivo para la pantalla de inicio */
+#start-screen {
+background: url('img/ghh.jpeg') no-repeat center center;
+  background-size: cover;
+  color: white; /* para que el texto resalte sobre la imagen */
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+}
+
+
+h1.logo {
+  font-weight: 700;
+  font-size: 2.2em;
+  color: #4f46e5;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
 button {
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 5px;
-    transition: transform 0.2s, box-shadow 0.2s;
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 5px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-button:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
 
-/* Correcto / Incorrecto */
 .correct { background:#22c55e; color:white; }
 .wrong { background:#ef4444; color:white; }
 
-/* Pista */
 .hint {
-    background:#fff7ed;
-    border-left:4px solid #f59e0b;
-    padding:5px;
-    margin:5px;
-    border-radius:6px;
-    display:inline-block;
-    color:#000;
+  background:#fff7ed; border-left:4px solid #f59e0b;
+  padding:5px; margin:5px; border-radius:6px; display:inline-block;
 }
 
-/* --- Inicio --- */
-#start-screen {
-    position: fixed;   /* Cubre todo */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: url('ghh.jpeg') no-repeat center center;
-    background-size: cover;
-    z-index: 1000;   /* Siempre encima */
-    color: white;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-}
+input { padding:8px; width:90%; margin:5px; border-radius:6px; border:1px solid #ccc; }
+button:disabled { opacity:0.5; cursor:not-allowed; }
 
-
-#start-screen .logo {
-    font-size: 3em;
-    font-weight: 800;
-    margin-bottom: 20px;
-}
-#start-screen p { font-size: 1.5em; margin-bottom: 30px; }
-
-/* Colores de botones */
-#start-btn { background: #4f46e5; color: white; }
-#add-btn { background: #f59e0b; color: white; }
-
-/* Inputs agregar */
-#add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px;}
+.hidden { display:none; }
 </style>
 </head>
 <body>
 
-
-
-<div id="start-screen">
-    <h1 class="logo">🌟 Divina Adivinador 🌟</h1>
-    <p>Prueba tus acertijos 🧠</p>
-    <button id="start-btn">¡Comenzar!</button>
-    <button id="add-btn">Agregar Acertijo</button>
+<!-- Pantalla de inicio -->
+<div id="start-screen" class="card">
+  <h1 class="logo">🌟 Divina Adivinador 🌟</h1>
+  <p style="color:#f59e0b;">Prueba tus acertijos 🧠</p>
+  <button id="start-btn" style="background:#4f46e5;color:white;">¡Comenzar!</button>
+  <button id="add-btn" style="background:#f59e0b;color:white;">Agregar Acertijo</button>
 </div>
 
+<!-- Pantalla de agregar acertijo -->
 <div id="add-screen" class="card hidden">
-    <h2>Agregar nuevo acertijo</h2>
-    <input id="new-q" placeholder="Pregunta" />
-    <input id="new-a" placeholder="Respuesta correcta" />
-    <input id="new-w1" placeholder="Respuesta incorrecta 1" />
-    <input id="new-w2" placeholder="Respuesta incorrecta 2" />
-    <input id="new-hint" placeholder="Pista (opcional)" />
-    <button id="save-btn">Guardar</button>
-    <button id="back-btn">Volver</button>
+  <h2 style="color:#4f46e5;">Agregar nuevo acertijo</h2>
+  <input id="new-q" placeholder="Pregunta" />
+  <input id="new-a" placeholder="Respuesta correcta" />
+  <input id="new-w1" placeholder="Respuesta incorrecta 1" />
+  <input id="new-w2" placeholder="Respuesta incorrecta 2" />
+  <input id="new-hint" placeholder="Pista (opcional)" />
+  <button id="save-btn" style="background:#22c55e;color:white;">Guardar</button>
+  <button id="back-btn" style="background:#ef4444;color:white;">Volver</button>
 </div>
 
+<!-- Pantalla de juego -->
 <div id="game-screen" class="card hidden">
-    <div id="progress"></div>
-    <div id="question" style="font-weight:bold;"></div>
-    <div id="choices"></div>
-    <p id="message"></p>
-    <p id="hint" class="hint hidden"></p>
-    <p>Puntaje: <span id="score">0</span> | Vidas: <span id="lives">💖💖💖</span></p>
-    <button id="hint-btn">Mostrar pista</button>
-    <button id="next-btn" disabled>Siguiente</button>
-    <button id="back-game-btn">Volver al inicio</button>
+  <div id="progress"></div>
+  <div id="question" style="font-weight:bold;color:#4f46e5;"></div>
+  <div id="choices"></div>
+  <p id="message"></p>
+  <p id="hint" class="hint hidden"></p>
+  <p>Puntaje: <span id="score">0</span> | Vidas: <span id="lives">💖💖💖</span></p>
+  <button id="hint-btn" style="background:#f59e0b;color:white;">Mostrar pista</button>
+  <button id="next-btn" disabled style="background:#4f46e5;color:white;">Siguiente</button>
+  <button id="back-game-btn" style="background:#ef4444;color:white;">Volver al inicio</button>
 </div>
 
 <script>
-// --- Datos iniciales de acertijos ---
 let puzzles=[
-    {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
-    {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
-    {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
-    {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.',c:['pera','manzana','plátano'],a:'pera',hint:'Es una fruta'},
-    {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?',c:['1 minuto','5 minutos','10 minutos'],a:'5 minutos',hint:'Piensa en la proporción'},
-    {q:'Tiene agujas pero no pincha. ¿Qué es?',c:['reloj','erizo','pino'],a:'reloj',hint:'Mide el tiempo'},
-    {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?',c:['hoyo','caja','montaña'],a:'hoyo',hint:'Piensa en cavar'},
-    {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?',c:['planta','fuego','nube'],a:'fuego',hint:'Consume oxígeno'},
-    {q:'Tiene llaves pero no abre puertas. ¿Qué es?',c:['piano','candado','mapa'],a:'piano',hint:'Se toca con las manos'},
-    {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
-    {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
+  {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
+  {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
+  {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
+  {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.',c:['pera','manzana','plátano'],a:'pera',hint:'Es una fruta'},
+  {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?',c:['1 minuto','5 minutos','10 minutos'],a:'5 minutos',hint:'Piensa en la proporción'},
+  {q:'Tiene agujas pero no pincha. ¿Qué es?',c:['reloj','erizo','pino'],a:'reloj',hint:'Mide el tiempo'},
+  {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?',c:['hoyo','caja','montaña'],a:'hoyo',hint:'Piensa en cavar'},
+  {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?',c:['planta','fuego','nube'],a:'fuego',hint:'Consume oxígeno'},
+  {q:'Tiene llaves pero no abre puertas. ¿Qué es?',c:['piano','candado','mapa'],a:'piano',hint:'Se toca con las manos'},
+  {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
+  {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
 ];
 
 let index=0, score=0, lives=3;
 
-// --- Elementos ---
 const startBtn=document.getElementById('start-btn');
 const addBtn=document.getElementById('add-btn');
 const saveBtn=document.getElementById('save-btn');
 const backBtn=document.getElementById('back-btn');
 const backGameBtn=document.getElementById('back-game-btn');
 const nextBtn=document.getElementById('next-btn');
-const hintBtn=document.getElementById('hint-btn');
 
-// --- Eventos ---
-startBtn.onclick = ()=>{ showScreen('game'); startGame(); };
-addBtn.onclick = ()=>{ showScreen('add'); };
-backBtn.onclick = ()=>{ showScreen('start'); };
-backGameBtn.onclick = ()=>{ showScreen('start'); };
+startBtn.onclick=()=>{ showScreen('game'); startGame(); };
+addBtn.onclick=()=>{ showScreen('add'); };
+backBtn.onclick=()=>{ showScreen('start'); };
+backGameBtn.onclick=()=>{ showScreen('start'); };
 
-saveBtn.onclick = ()=>{
-    const q=document.getElementById('new-q').value.trim();
-    const a=document.getElementById('new-a').value.trim();
-    const w1=document.getElementById('new-w1').value.trim();
-    const w2=document.getElementById('new-w2').value.trim();
-    const h=document.getElementById('new-hint').value.trim();
-    if(q && a && w1 && w2){
-        let choices=[a,w1,w2];
-        choices.sort(()=>Math.random()-0.5); // revuelve las opciones
-        puzzles.push({q:q,c:choices,a:a,hint:h});
-        alert('Acertijo guardado');
-        document.getElementById('new-q').value='';
-        document.getElementById('new-a').value='';
-        document.getElementById('new-w1').value='';
-        document.getElementById('new-w2').value='';
-        document.getElementById('new-hint').value='';
-        showScreen('start');
-    } else alert('Completa todos los campos');
+saveBtn.onclick=()=>{
+  const q=document.getElementById('new-q').value.trim();
+  const a=document.getElementById('new-a').value.trim();
+  const w1=document.getElementById('new-w1').value.trim();
+  const w2=document.getElementById('new-w2').value.trim();
+  const h=document.getElementById('new-hint').value.trim();
+  if(q && a && w1 && w2){
+    let choices=[a,w1,w2];
+    choices.sort(()=>Math.random()-0.5);
+    puzzles.push({q:q,c:choices,a:a,hint:h});
+    alert('Acertijo guardado');
+    document.getElementById('new-q').value='';
+    document.getElementById('new-a').value='';
+    document.getElementById('new-w1').value='';
+    document.getElementById('new-w2').value='';
+    document.getElementById('new-hint').value='';
+    showScreen('start');
+  } else alert('Completa todos los campos');
 };
 
-// --- Funciones ---
 function showScreen(scr){
-    const start = document.getElementById('start-screen');
-    const add = document.getElementById('add-screen');
-    const game = document.getElementById('game-screen');
-
-    // Oculta todas las pantallas. Usamos la clase .hidden
-    start.classList.add('hidden');
-    add.classList.add('hidden');
-    game.classList.add('hidden');
-    
-    // Si queremos mostrar la pantalla de inicio, limpiamos el estilo inline que pudo quedar
-    if (scr !== 'start') {
-         start.style.display = ''; 
-    }
-
-    if(scr==='start') start.classList.remove('hidden');
-    else if(scr==='add') add.classList.remove('hidden');
-    else if(scr==='game') {
-        game.classList.remove('hidden');
-        // ¡CORRECCIÓN! Eliminamos el conflicto de estilo inline aquí
-    }
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('add-screen').classList.add('hidden');
+  document.getElementById('game-screen').classList.add('hidden');
+  if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
+  else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
+  else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
 }
 
 function startGame(){
-    score=0; lives=3; index=0;
-    updateStats();
-    // Aseguramos que no haya un estilo 'display: none' pegado a la pantalla de inicio
-    document.getElementById('start-screen').style.display = ''; 
-    showQ();
+  score=0; lives=3; index=0; 
+  updateStats(); 
+  showQ();
 }
 
 function showQ(){
-    const q=puzzles[index];
-    document.getElementById('message').textContent='';
-    document.getElementById('hint').classList.add('hidden');
-    document.getElementById('question').textContent=q.q;
+  const q=puzzles[index]; 
+  document.getElementById('message').textContent=''; 
+  document.getElementById('hint').classList.add('hidden'); 
+  document.getElementById('question').textContent=q.q;
 
-    const cDiv=document.getElementById('choices');
-    cDiv.innerHTML='';
-    nextBtn.disabled=true;
+  const cDiv=document.getElementById('choices'); 
+  cDiv.innerHTML=''; 
+  nextBtn.disabled=true;
 
-    // Revuelve siempre las opciones antes de mostrar
-    q.c.sort(()=>Math.random()-0.5);
+  document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
 
-    q.c.forEach(ch=>{
-        const b=document.createElement('button');
-        b.textContent=ch;
-        b.onclick=()=>check(ch);
-        cDiv.appendChild(b);
-    });
+  if(q.c.length>0){
+    q.c.forEach(ch=>{
+      const b=document.createElement('button');
+      b.textContent=ch;
+      b.onclick=()=>check(ch);
+      cDiv.appendChild(b);
+    });
+  } else {
+    const i=document.createElement('input'); 
+    i.id='answer'; 
+    i.placeholder='Respuesta'; 
+    i.onkeydown=e=>{ if(e.key==='Enter') check(i.value); }; 
+    cDiv.appendChild(i);
+  }
 
-    document.getElementById('progress').textContent = `Pregunta ${index+1} de ${puzzles.length}`;
-
-    // Mostrar/ocultar botón de pista
-    hintBtn.style.display = q.hint ? 'inline-block' : 'none';
+  document.getElementById('progress').textContent = `Pregunta ${index+1} de ${puzzles.length}`;
 }
 
 function check(ans){
-    const q = puzzles[index];
-    const msg = document.getElementById('message');
+  const q = puzzles[index]; 
+  const correct = (ans.toLowerCase() == q.a.toLowerCase()); 
+  const msg = document.getElementById('message'); 
 
-    if(ans.toLowerCase() === q.a.toLowerCase()){
-        score += 10;
-        msg.textContent = '✅ Correcto!';
-        msg.className = 'correct';
-    } else {
-        lives--;
-        msg.textContent = '❌ Incorrecto. La respuesta correcta era: ' + q.a;
-        msg.className = 'wrong';
-        if(lives <= 0){
-            alert('¡Has perdido todas tus vidas! Puntaje: '+score);
-            showScreen('start');
-            return;
-        }
-    }
-    updateStats();
-    nextBtn.disabled = false;
+  if(correct){
+    score += 10; 
+    msg.textContent = '✅ Correcto!';
+    msg.className = 'correct';
+    confetti();
+  } else {
+    lives--; 
+    msg.textContent = '❌ Incorrecto';
+    msg.className = 'wrong';
+    if(lives <= 0){
+      alert('¡Has perdido todas tus vidas! Puntaje: ' + score);
+      showScreen('start');
+      return;
+    }
+  }
+  updateStats(); 
+  nextBtn.disabled = false;
 }
 
+document.getElementById('next-btn').onclick=()=>{
+  index++; 
+  if(index>=puzzles.length){
+    alert('¡Juego terminado! Puntaje: ' + score);
+    showScreen('start');
+  } else showQ();
+};
 
-nextBtn.onclick = ()=>{
-    index++;
-    if(index >= puzzles.length){
-        alert('¡Juego terminado! Puntaje: '+score);
-        showScreen('start');
-    } else showQ();
-}
-
-hintBtn.onclick = ()=>{
-    document.getElementById('hint').textContent='💡 Pista: '+puzzles[index].hint;
-    document.getElementById('hint').classList.remove('hidden');
+document.getElementById('hint-btn').onclick=()=>{
+  document.getElementById('hint').textContent='💡 Pista: ' + puzzles[index].hint; 
+  document.getElementById('hint').classList.remove('hidden');
 }
 
 function updateStats(){
-    document.getElementById('score').textContent = score;
-    let hearts='';
-    for(let i=0;i<lives;i++){ hearts+='💖'; }
-    document.getElementById('lives').textContent = hearts;
+  document.getElementById('score').textContent = score; 
+
+  let hearts = '';
+  for(let i=0;i<lives;i++){ hearts += '💖'; }
+  document.getElementById('lives').textContent = hearts;
 }
 
-// Inicia siempre en pantalla de inicio
-showScreen('start');
+function confetti(){
+  const c=document.createElement('div');
+  c.textContent='🎉';
+  c.style.position='absolute';
+  c.style.top=Math.random()*80+'%';
+  c.style.left=Math.random()*80+'%';
+  c.style.fontSize='24px';
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),1000);
+}
 </script>
 </body>
 </html>
-
-
