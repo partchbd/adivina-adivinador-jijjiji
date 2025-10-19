@@ -184,22 +184,28 @@ saveBtn.onclick = ()=>{
 
 // --- Funciones ---
 function showScreen(scr){
-    const start = document.getElementById('start-screen');
-    const add = document.getElementById('add-screen');
-    const game = document.getElementById('game-screen');
+    const start = document.getElementById('start-screen');
+    const add = document.getElementById('add-screen');
+    const game = document.getElementById('game-screen');
 
-    start.classList.add('hidden');
-    add.classList.add('hidden');
-    game.classList.add('hidden');
+    // Oculta todas las pantallas al inicio
+    start.classList.add('hidden');
+    add.classList.add('hidden');
+    game.classList.add('hidden');
+    // Asegúrate de remover cualquier estilo inline que hayas puesto
+    start.style.display = ''; 
 
-    if(scr==='start') start.classList.remove('hidden');
-    else if(scr==='add') add.classList.remove('hidden');
-    else if(scr==='game') {
+    if(scr==='start') {
+        start.classList.remove('hidden');
+    }
+    else if(scr==='add') {
+        add.classList.remove('hidden');
+    }
+    else if(scr==='game') {
         game.classList.remove('hidden');
-        // Asegurarse que el start-screen ya no bloquea
-        start.style.display='none';
     }
 }
+    
 
 function startGame(){
     score=0; lives=3; index=0;
