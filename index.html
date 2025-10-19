@@ -245,26 +245,22 @@ function check(ans){
 
     if(ans.toLowerCase() === q.a.toLowerCase()){
         score += 10;
-        msg
-
-
-    if(ans.toLowerCase() === q.a.toLowerCase()){
-        score += 10;
         msg.textContent = '✅ Correcto!';
-        msg.className='correct';
+        msg.className = 'correct';
     } else {
         lives--;
         msg.textContent = '❌ Incorrecto. La respuesta correcta era: ' + q.a;
-        msg.className='wrong';
-        if(lives<=0){
+        msg.className = 'wrong';
+        if(lives <= 0){
             alert('¡Has perdido todas tus vidas! Puntaje: '+score);
             showScreen('start');
             return;
         }
     }
     updateStats();
-    nextBtn.disabled=false;
+    nextBtn.disabled = false;
 }
+
 
 nextBtn.onclick = ()=>{
     index++;
