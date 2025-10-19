@@ -101,7 +101,7 @@ button:disabled { opacity:0.5; cursor:not-allowed; }
   <div id="choices"></div>
   <p id="message"></p>
   <p id="hint" class="hint hidden"></p>
-  <p>Puntaje: <span id="score">0</span> | Vidas: <span id="lives">3</span></p>
+  <p>Puntaje: <span id="score">0</span> | Vidas: <span id="lives">💖💖💖</span></p>
   <button id="hint-btn" style="background:#f59e0b;color:white;">Mostrar pista</button>
   <button id="next-btn" disabled style="background:#4f46e5;color:white;">Siguiente</button>
   <button id="back-game-btn" style="background:#ef4444;color:white;">Volver al inicio</button>
@@ -122,9 +122,7 @@ let puzzles=[
   {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
 ];
 
-
-
-let index=0,score=0,lives=3;
+let index=0, score=0, lives=3;
 
 const startBtn=document.getElementById('start-btn');
 const addBtn=document.getElementById('add-btn');
@@ -133,10 +131,10 @@ const backBtn=document.getElementById('back-btn');
 const backGameBtn=document.getElementById('back-game-btn');
 const nextBtn=document.getElementById('next-btn');
 
-startBtn.onclick=()=>{showScreen('game'); startGame();};
-addBtn.onclick=()=>{showScreen('add');};
-backBtn.onclick=()=>{showScreen('start');};
-backGameBtn.onclick=()=>{showScreen('start');};
+startBtn.onclick=()=>{ showScreen('game'); startGame(); };
+addBtn.onclick=()=>{ showScreen('add'); };
+backBtn.onclick=()=>{ showScreen('start'); };
+backGameBtn.onclick=()=>{ showScreen('start'); };
 
 saveBtn.onclick=()=>{
   const q=document.getElementById('new-q').value.trim();
@@ -168,7 +166,7 @@ function showScreen(scr){
 }
 
 function startGame(){
-  score=0;lives=3;index=0; 
+  score=0; lives=3; index=0; 
   updateStats(); 
   showQ();
 }
@@ -183,10 +181,8 @@ function showQ(){
   cDiv.innerHTML=''; 
   nextBtn.disabled=true;
 
-  // Botón de pista solo si hay
   document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
 
-  // Mostrar opciones
   if(q.c.length>0){
     q.c.forEach(ch=>{
       const b=document.createElement('button');
@@ -198,109 +194,11 @@ function showQ(){
     const i=document.createElement('input'); 
     i.id='answer'; 
     i.placeholder='Respuesta'; 
-    i.onkeydown=e=>{if(e.key==='Enter') check(i.value);}; 
+    i.onkeydown=e=>{ if(e.key==='Enter') check(i.value); }; 
     cDiv.appendChild(i);
   }
 
-  // Indicador de progreso
   document.getElementById('progress').textContent = `Pregunta ${index+1} de ${puzzles.length}`;
-}
-
-function check(ans)
-  const q=puzzles[index]; 
-  const correct=(ans.toLowerCase()==q.a.toLowerCase()); 
-  const msg=document.getElementById('message'); 
-
-  if(correct)
-    score+=10; 
-    msg.textContent='✅ Correcto!';
-    msg.className='correct';
-    confetti();
- 
-
-
-
-
-    
-
-
-
-let index=0,score=0,lives=3;
-
-const startBtn=document.getElementById('start-btn');
-const addBtn=document.getElementById('add-btn');
-const saveBtn=document.getElementById('save-btn');
-const backBtn=document.getElementById('back-btn');
-const backGameBtn=document.getElementById('back-game-btn');
-const nextBtn=document.getElementById('next-btn');
-
-startBtn.onclick=()=>{showScreen('game'); startGame();};
-addBtn.onclick=()=>{showScreen('add');};
-backBtn.onclick=()=>{showScreen('start');};
-backGameBtn.onclick=()=>{showScreen('start');};
-
-saveBtn.onclick=()=>{
-  const q=document.getElementById('new-q').value.trim();
-  const a=document.getElementById('new-a').value.trim();
-  const w1=document.getElementById('new-w1').value.trim();
-  const w2=document.getElementById('new-w2').value.trim();
-  const h=document.getElementById('new-hint').value.trim();
-  if(q && a && w1 && w2){
-    let choices=[a,w1,w2];
-    choices.sort(()=>Math.random()-0.5);
-    puzzles.push({q:q,c:choices,a:a,hint:h});
-    alert('Acertijo guardado');
-    document.getElementById('new-q').value='';
-    document.getElementById('new-a').value='';
-    document.getElementById('new-w1').value='';
-    document.getElementById('new-w2').value='';
-    document.getElementById('new-hint').value='';
-    showScreen('start');
-  } else alert('Completa todos los campos');
-};
-
-function showScreen(scr){
-  document.getElementById('start-screen').classList.add('hidden');
-  document.getElementById('add-screen').classList.add('hidden');
-  document.getElementById('game-screen').classList.add('hidden');
-  if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
-  else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
-  else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
-}
-
-function startGame(){
-  score=0;lives=3;index=0; 
-  updateStats(); 
-  showQ();
-}
-
-function showQ(){
-  const q=puzzles[index]; 
-  document.getElementById('message').textContent=''; 
-  document.getElementById('hint').classList.add('hidden'); 
-  document.getElementById('question').textContent=q.q;
-
-  const cDiv=document.getElementById('choices'); 
-  cDiv.innerHTML=''; 
-  nextBtn.disabled=true;
-
-  if(q.c.length>0){
-    q.c.forEach(ch=>{
-      const b=document.createElement('button');
-      b.textContent=ch;
-      b.onclick=()=>check(ch);
-      cDiv.appendChild(b);
-    });
-  } else {
-    const i=document.createElement('input'); 
-    i.id='answer'; 
-    i.placeholder='Respuesta'; 
-    i.onkeydown=e=>{if(e.key==='Enter') check(i.value);}; 
-    cDiv.appendChild(i);
-  }
-
-  // Mostrar botón de pista solo si hay
-  document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
 }
 
 function check(ans){
@@ -324,35 +222,29 @@ function check(ans){
     }
   }
   updateStats(); 
-  nextBtn.disabled = false
-
-  }
-  updateStats(); 
-  nextBtn.disabled=false;
-
+  nextBtn.disabled = false;
+}
 
 document.getElementById('next-btn').onclick=()=>{
   index++; 
   if(index>=puzzles.length){
-    alert('Juego terminado! Puntaje: '+score);
+    alert('¡Juego terminado! Puntaje: ' + score);
     showScreen('start');
   } else showQ();
 };
 
 document.getElementById('hint-btn').onclick=()=>{
-  document.getElementById('hint').textContent='💡 Pista: '+puzzles[index].hint; 
+  document.getElementById('hint').textContent='💡 Pista: ' + puzzles[index].hint; 
   document.getElementById('hint').classList.remove('hidden');
 }
 
 function updateStats(){
   document.getElementById('score').textContent = score; 
 
-  // Mostrar corazones
   let hearts = '';
   for(let i=0;i<lives;i++){ hearts += '💖'; }
   document.getElementById('lives').textContent = hearts;
 }
-
 
 function confetti(){
   const c=document.createElement('div');
@@ -365,7 +257,5 @@ function confetti(){
   setTimeout(()=>c.remove(),1000);
 }
 </script>
-
 </body>
 </html>
-
