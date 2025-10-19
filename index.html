@@ -135,6 +135,10 @@ let puzzles=[
     {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
     {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
 ];
+// Cargar acertijos guardados si existen
+if(localStorage.getItem('puzzles')){
+    puzzles = JSON.parse(localStorage.getItem('puzzles'));
+}
 
 let index=0, score=0, lives=3;
 
@@ -161,8 +165,12 @@ saveBtn.onclick = ()=>{
     const h=document.getElementById('new-hint').value.trim();
     if(q && a && w1 && w2){
         let choices=[a,w1,w2];
-        choices.sort(()=>Math.random()-0.5);
+        choices.sort(()=>Math.random()-0.5); // revuelve las opciones
         puzzles.push({q:q,c:choices,a:a,hint:h});
+        
+        // GUARDAR EN LOCALSTORAGE
+        localStorage.setItem('puzzles', JSON.stringify(puzzles));
+        
         alert('Acertijo guardado');
         document.getElementById('new-q').value='';
         document.getElementById('new-a').value='';
@@ -172,6 +180,7 @@ saveBtn.onclick = ()=>{
         showScreen('start');
     } else alert('Completa todos los campos');
 };
+
 
 // --- FUNCIONES ---
 function showScreen(scr){
