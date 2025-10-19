@@ -103,11 +103,12 @@ button:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
     <input id="new-w2" placeholder="Respuesta incorrecta 2" />
     <input id="new-hint" placeholder="Pista (opcional)" />
     <h3>Acertijos guardados</h3>
-<ul id="puzzle-list"></ul>
+    <ul id="puzzle-list"></ul>
 
     <br>
     <button id="save-btn">Guardar</button>
     <button id="back-btn">Volver</button>
+    <button id="reset-btn" style="background: #ef4444; color: white;">🚨 Restablecer Acertijos de Fábrica</button>
 </div>
 
 <!-- PANTALLA JUEGO -->
@@ -124,8 +125,9 @@ button:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 </div>
 
 <script>
-// --- DATOS INICIALES ---
-let initialPuzzles = [
+// --- DATOS INICIALES Y CARGA ---
+// 1. Lista de acertijos predeterminada (de fábrica)
+const initialPuzzles = [
     {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
     {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
     {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
@@ -139,18 +141,22 @@ let initialPuzzles = [
     {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
 ];
 
-// Comprueba si ya hay acertijos guardados en localStorage
-if (localStorage.getItem('puzzles')) {
-    // Si hay, carga la versión guardada (que ya incluye tus ediciones/eliminaciones)
-    puzzles = JSON.parse(localStorage.getItem('puzzles'));
-} else {
-    // Si NO hay acertijos guardados, usa la lista inicial y guárdala por primera vez.
-    puzzles = initialPuzzles;
-    localStorage.setItem('puzzles', JSON.stringify(puzzles));
+let puzzles = [];
+
+// Función para cargar los datos (se ejecuta al inicio y al resetear)
+function loadPuzzles() {
+    if (localStorage.getItem('puzzles')) {
+        // Carga los acertijos que el usuario ha editado/añadido/eliminado
+        puzzles = JSON.parse(localStorage.getItem('puzzles'));
+    } else {
+        // Carga los acertijos iniciales y los guarda por primera vez
+        puzzles = [...initialPuzzles]; // Usa el spread para hacer una copia
+        localStorage.setItem('puzzles', JSON.stringify(puzzles));
+    }
 }
+loadPuzzles(); // Ejecuta la carga al iniciar
 
 let index=0, score=0, lives=3;
-// El resto del código JS (eventos y funciones) sigue igual.
 
 // --- ELEMENTOS ---
 const startBtn=document.getElementById('start-btn');
@@ -160,13 +166,16 @@ const backBtn=document.getElementById('back-btn');
 const backGameBtn=document.getElementById('back-game-btn');
 const nextBtn=document.getElementById('next-btn');
 const hintBtn=document.getElementById('hint-btn');
+const resetBtn=document.getElementById('reset-btn'); // Nuevo elemento
 
 // --- EVENTOS ---
 startBtn.onclick = ()=>{ showScreen('game'); startGame(); };
-// Llama a updatePuzzleList cada vez que se abre la pantalla 'add'
 addBtn.onclick = ()=>{ showScreen('add'); updatePuzzleList(); }; 
 backBtn.onclick = ()=>{ showScreen('start'); };
 backGameBtn.onclick = ()=>{ showScreen('start'); };
+
+// Evento para el nuevo botón de reseteo
+resetBtn.onclick = resetToFactory;
 
 // Asignar función de guardar por defecto (añadir nuevo)
 saveBtn.onclick = addNewPuzzle;
@@ -179,27 +188,33 @@ function addNewPuzzle(){
     const h=document.getElementById('new-hint').value.trim();
     if(q && a && w1 && w2){
         let choices=[a,w1,w2];
-        choices.sort(()=>Math.random()-0.5); // revuelve las opciones
+        choices.sort(()=>Math.random()-0.5); 
         puzzles.push({q:q,c:choices,a:a,hint:h});
         
-        // GUARDAR EN LOCALSTORAGE
         localStorage.setItem('puzzles', JSON.stringify(puzzles));
         
         alert('Acertijo guardado');
-        // Limpiar inputs
         document.getElementById('new-q').value='';
         document.getElementById('new-a').value='';
         document.getElementById('new-w1').value='';
         document.getElementById('new-w2').value='';
         document.getElementById('new-hint').value='';
         
-        updatePuzzleList(); // Actualiza la lista para mostrar el nuevo acertijo
+        updatePuzzleList(); 
     } else alert('Completa todos los campos');
 }
 
-// --- FUNCIONES ---
+// Función para restablecer todos los acertijos
+function resetToFactory() {
+    if(confirm('🚨 ADVERTENCIA: ¿Estás seguro de que quieres restablecer la lista de acertijos a la versión original de fábrica? Perderás todos los acertijos que hayas agregado o editado.')){
+        localStorage.removeItem('puzzles'); // Elimina los datos guardados
+        loadPuzzles(); // Vuelve a cargar la lista de fábrica y la guarda
+        alert('Acertijos restablecidos a la configuración de fábrica.');
+        updatePuzzleList();
+    }
+}
 
-// FUNCIÓN CLAVE PARA SOLUCIONAR EL PROBLEMA DE LA LISTA
+// --- FUNCIONES DE GESTIÓN (Editar/Eliminar) ---
 function updatePuzzleList() {
     const list = document.getElementById('puzzle-list');
     list.innerHTML = '';
@@ -208,21 +223,18 @@ function updatePuzzleList() {
 
     puzzles.forEach((p, i) => {
         const li = document.createElement('li');
-        // li.style.marginBottom = '10px';
         li.style.textAlign = 'left';
         li.style.marginTop = '10px';
         li.style.borderBottom = '1px dashed #ccc';
         li.style.paddingBottom = '5px';
         li.style.fontSize = '14px';
 
-        // Texto del acertijo
         const text = document.createElement('span');
         text.textContent = p.q;
         li.appendChild(text);
 
-        // Contenedor de botones para moverlos a la derecha o abajo
         const btnContainer = document.createElement('div');
-        btnContainer.style.display = 'block'; // Asegura que estén en una línea propia
+        btnContainer.style.display = 'block'; 
         btnContainer.style.marginTop = '5px';
 
         // Botón Editar
@@ -234,20 +246,17 @@ function updatePuzzleList() {
         editBtn.style.background = '#4f46e5';
         editBtn.style.color = 'white';
         editBtn.onclick = () => {
-            // Carga el acertijo en los inputs
             document.getElementById('new-q').value = p.q;
             document.getElementById('new-a').value = p.a;
             
-            // Filtra las opciones incorrectas. Se asume que siempre hay 2 incorrectas.
             const incorrectas = p.c.filter(c => c.toLowerCase() !== p.a.toLowerCase());
             document.getElementById('new-w1').value = incorrectas[0] || '';
             document.getElementById('new-w2').value = incorrectas[1] || '';
             
             document.getElementById('new-hint').value = p.hint || '';
             
-            alert(`Editando: ${p.q}. La respuesta correcta es: ${p.a}`);
+            alert(`Editando: ${p.q}`);
 
-            // Cambiar el botón guardar para actualizar
             saveBtn.onclick = () => {
                 const q = document.getElementById('new-q').value.trim();
                 const a = document.getElementById('new-a').value.trim();
@@ -258,7 +267,7 @@ function updatePuzzleList() {
                     let choices = [a, w1, w2];
                     choices.sort(()=>Math.random()-0.5);
                     puzzles[i] = {q, c:choices, a, hint:h};
-                    localStorage.setItem('puzzles', JSON.stringify(puzzles)); // GUARDAR CAMBIOS
+                    localStorage.setItem('puzzles', JSON.stringify(puzzles)); 
                     
                     alert('Acertijo actualizado. Vuelve a la pantalla inicial.');
                     document.getElementById('new-q').value='';
@@ -266,14 +275,14 @@ function updatePuzzleList() {
                     document.getElementById('new-w1').value='';
                     document.getElementById('new-w2').value='';
                     document.getElementById('new-hint').value='';
-                    saveBtn.onclick = addNewPuzzle; // restaurar función original
+                    saveBtn.onclick = addNewPuzzle; 
                     updatePuzzleList();
                 } else alert('Completa todos los campos');
             }
         }
         btnContainer.appendChild(editBtn);
 
-        // Botón Eliminar (Solución al segundo problema)
+        // Botón Eliminar
         const delBtn = document.createElement('button');
         delBtn.textContent = '🗑️ Eliminar';
         delBtn.style.fontSize = '12px';
@@ -283,7 +292,7 @@ function updatePuzzleList() {
         delBtn.onclick = () => {
             if(confirm(`¿Estás seguro de que quieres eliminar el acertijo: "${p.q}"?`)){
                 puzzles.splice(i, 1);
-                localStorage.setItem('puzzles', JSON.stringify(puzzles)); // GUARDAR CAMBIOS
+                localStorage.setItem('puzzles', JSON.stringify(puzzles)); 
                 alert('Acertijo eliminado.');
                 updatePuzzleList();
             }
@@ -307,7 +316,6 @@ function showScreen(scr){
 
 function startGame(){
     score=0; lives=3; index=0;
-    // Mezcla el array de acertijos al iniciar el juego
     puzzles.sort(()=>Math.random()-0.5); 
     updateStats();
     showQ();
@@ -316,8 +324,6 @@ function startGame(){
 function showQ(){
     const q=puzzles[index];
     document.getElementById('message').textContent='';
-    
-    // SOLUCIÓN AL PRIMER PROBLEMA: Ocultar la pista al cargar la nueva pregunta
     document.getElementById('hint').classList.add('hidden'); 
     
     document.getElementById('question').textContent=q.q;
@@ -326,7 +332,7 @@ function showQ(){
     cDiv.innerHTML='';
     nextBtn.disabled=true;
 
-    q.c.sort(()=>Math.random()-0.5); // revuelve opciones
+    q.c.sort(()=>Math.random()-0.5); 
 
     q.c.forEach(ch=>{
         const b=document.createElement('button');
@@ -343,9 +349,7 @@ function check(ans){
     const q = puzzles[index];
     const msg = document.getElementById('message');
 
-    // Deshabilita los botones de opción después de seleccionar
     document.querySelectorAll('#choices button').forEach(b => b.disabled = true);
-
 
     if(ans.toLowerCase() === q.a.toLowerCase()){
         score += 10;
@@ -387,6 +391,7 @@ function updateStats(){
 
 // INICIA EN PANTALLA INICIO
 showScreen('start');
+</script>
 </script>
 
 </body>
