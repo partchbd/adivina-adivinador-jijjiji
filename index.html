@@ -306,13 +306,21 @@ function updatePuzzleList() {
 
 
 function showScreen(scr){
+    const hintElement = document.getElementById('hint');
+    
+    // ✅ OCULTAR y LIMPIAR el elemento de la pista al cambiar de pantalla
+    hintElement.classList.add('hidden');
+    hintElement.textContent = ''; // Limpiar el contenido para evitar fantasmas de texto
+    
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('add-screen').classList.add('hidden');
     document.getElementById('game-screen').classList.add('hidden');
+    
     if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
     else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
     else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
 }
+
 
 function startGame(){
     score=0; lives=3; index=0;
