@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-bbody {
+body {
   font-family: 'Poppins', sans-serif;
   text-align: center;
   background: #345494; /* color neutro para todas las pantallas */
@@ -96,6 +96,7 @@ button:disabled { opacity:0.5; cursor:not-allowed; }
 
 <!-- Pantalla de juego -->
 <div id="game-screen" class="card hidden">
+  <div id="progress"></div>
   <div id="question" style="font-weight:bold;color:#4f46e5;"></div>
   <div id="choices"></div>
   <p id="message"></p>
@@ -110,8 +111,119 @@ button:disabled { opacity:0.5; cursor:not-allowed; }
 let puzzles=[
   {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
   {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
-  {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'}
+  {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
+  {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.',c:['pera','manzana','plátano'],a:'pera',hint:'Es una fruta'},
+  {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?',c:['1 minuto','5 minutos','10 minutos'],a:'5 minutos',hint:'Piensa en la proporción'},
+  {q:'Tiene agujas pero no pincha. ¿Qué es?',c:['reloj','erizo','pino'],a:'reloj',hint:'Mide el tiempo'},
+  {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?',c:['hoyo','caja','montaña'],a:'hoyo',hint:'Piensa en cavar'},
+  {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?',c:['planta','fuego','nube'],a:'fuego',hint:'Consume oxígeno'},
+  {q:'Tiene llaves pero no abre puertas. ¿Qué es?',c:['piano','candado','mapa'],a:'piano',hint:'Se toca con las manos'},
+  {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
+  {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
 ];
+
+
+
+let index=0,score=0,lives=3;
+
+const startBtn=document.getElementById('start-btn');
+const addBtn=document.getElementById('add-btn');
+const saveBtn=document.getElementById('save-btn');
+const backBtn=document.getElementById('back-btn');
+const backGameBtn=document.getElementById('back-game-btn');
+const nextBtn=document.getElementById('next-btn');
+
+startBtn.onclick=()=>{showScreen('game'); startGame();};
+addBtn.onclick=()=>{showScreen('add');};
+backBtn.onclick=()=>{showScreen('start');};
+backGameBtn.onclick=()=>{showScreen('start');};
+
+saveBtn.onclick=()=>{
+  const q=document.getElementById('new-q').value.trim();
+  const a=document.getElementById('new-a').value.trim();
+  const w1=document.getElementById('new-w1').value.trim();
+  const w2=document.getElementById('new-w2').value.trim();
+  const h=document.getElementById('new-hint').value.trim();
+  if(q && a && w1 && w2){
+    let choices=[a,w1,w2];
+    choices.sort(()=>Math.random()-0.5);
+    puzzles.push({q:q,c:choices,a:a,hint:h});
+    alert('Acertijo guardado');
+    document.getElementById('new-q').value='';
+    document.getElementById('new-a').value='';
+    document.getElementById('new-w1').value='';
+    document.getElementById('new-w2').value='';
+    document.getElementById('new-hint').value='';
+    showScreen('start');
+  } else alert('Completa todos los campos');
+};
+
+function showScreen(scr){
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('add-screen').classList.add('hidden');
+  document.getElementById('game-screen').classList.add('hidden');
+  if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
+  else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
+  else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
+}
+
+function startGame(){
+  score=0;lives=3;index=0; 
+  updateStats(); 
+  showQ();
+}
+
+function showQ(){
+  const q=puzzles[index]; 
+  document.getElementById('message').textContent=''; 
+  document.getElementById('hint').classList.add('hidden'); 
+  document.getElementById('question').textContent=q.q;
+
+  const cDiv=document.getElementById('choices'); 
+  cDiv.innerHTML=''; 
+  nextBtn.disabled=true;
+
+  // Botón de pista solo si hay
+  document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
+
+  // Mostrar opciones
+  if(q.c.length>0){
+    q.c.forEach(ch=>{
+      const b=document.createElement('button');
+      b.textContent=ch;
+      b.onclick=()=>check(ch);
+      cDiv.appendChild(b);
+    });
+  } else {
+    const i=document.createElement('input'); 
+    i.id='answer'; 
+    i.placeholder='Respuesta'; 
+    i.onkeydown=e=>{if(e.key==='Enter') check(i.value);}; 
+    cDiv.appendChild(i);
+  }
+
+  // Indicador de progreso
+  document.getElementById('progress').textContent = `Pregunta ${index+1} de ${puzzles.length}`;
+}
+
+function check(ans)
+  const q=puzzles[index]; 
+  const correct=(ans.toLowerCase()==q.a.toLowerCase()); 
+  const msg=document.getElementById('message'); 
+
+  if(correct)
+    score+=10; 
+    msg.textContent='✅ Correcto!';
+    msg.className='correct';
+    confetti();
+ 
+
+
+
+
+    
+
+
 
 let index=0,score=0,lives=3;
 
@@ -192,19 +304,19 @@ function showQ(){
 }
 
 function check(ans){
-  const q=puzzles[index]; 
-  const correct=(ans.toLowerCase()==q.a.toLowerCase()); 
-  const msg=document.getElementById('message'); 
+  const q = puzzles[index]; 
+  const correct = (ans.toLowerCase() == q.a.toLowerCase()); 
+  const msg = document.getElementById('message'); 
 
   if(correct){
-    score+=10; 
-    msg.textContent='✅ Correcto!';
-    msg.className='correct';
+    score += 10; 
+    msg.textContent = '✅ Correcto!';
+    msg.className = 'correct';
     confetti();
-  } else{
+  } else {
     lives--; 
-    msg.textContent='❌ Incorrecto';
-    msg.className='wrong';
+    msg.textContent = '❌ Incorrecto';
+    msg.className = 'wrong';
     if(lives <= 0){
       alert('¡Has perdido todas tus vidas! Puntaje: ' + score);
       showScreen('start');
@@ -212,8 +324,12 @@ function check(ans){
     }
   }
   updateStats(); 
+  nextBtn.disabled = false
+
+  }
+  updateStats(); 
   nextBtn.disabled=false;
-}
+
 
 document.getElementById('next-btn').onclick=()=>{
   index++; 
@@ -229,9 +345,14 @@ document.getElementById('hint-btn').onclick=()=>{
 }
 
 function updateStats(){
-  document.getElementById('score').textContent=score; 
-  document.getElementById('lives').textContent=lives;
+  document.getElementById('score').textContent = score; 
+
+  // Mostrar corazones
+  let hearts = '';
+  for(let i=0;i<lives;i++){ hearts += '💖'; }
+  document.getElementById('lives').textContent = hearts;
 }
+
 
 function confetti(){
   const c=document.createElement('div');
