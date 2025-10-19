@@ -102,6 +102,9 @@ button:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
     <input id="new-w1" placeholder="Respuesta incorrecta 1" />
     <input id="new-w2" placeholder="Respuesta incorrecta 2" />
     <input id="new-hint" placeholder="Pista (opcional)" />
+    <h3>Acertijos guardados</h3>
+<ul id="puzzle-list"></ul>
+
     <br>
     <button id="save-btn">Guardar</button>
     <button id="back-btn">Volver</button>
@@ -183,6 +186,67 @@ saveBtn.onclick = ()=>{
 
 
 // --- FUNCIONES ---
+function updatePuzzleList() {
+    const list = document.getElementById('puzzle-list');
+    list.innerHTML = '';
+    puzzles.forEach((p, i) => {
+        const li = document.createElement('li');
+        li.style.marginBottom = '10px';
+
+        // Texto del acertijo
+        const text = document.createElement('span');
+        text.textContent = p.q + ' (Respuesta: ' + p.a + ') ';
+        li.appendChild(text);
+
+        // Botón Editar
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Editar';
+        editBtn.style.marginRight = '5px';
+        editBtn.onclick = () => {
+            // Carga el acertijo en los inputs
+            document.getElementById('new-q').value = p.q;
+            document.getElementById('new-a').value = p.a;
+            document.getElementById('new-w1').value = p.c.filter(c => c !== p.a)[0] || '';
+            document.getElementById('new-w2').value = p.c.filter(c => c !== p.a)[1] || '';
+            document.getElementById('new-hint').value = p.hint || '';
+
+            // Cambiar el botón guardar para actualizar
+            saveBtn.onclick = () => {
+                const q = document.getElementById('new-q').value.trim();
+                const a = document.getElementById('new-a').value.trim();
+                const w1 = document.getElementById('new-w1').value.trim();
+                const w2 = document.getElementById('new-w2').value.trim();
+                const h = document.getElementById('new-hint').value.trim();
+                if(q && a && w1 && w2){
+                    let choices = [a, w1, w2];
+                    choices.sort(()=>Math.random()-0.5);
+                    puzzles[i] = {q, c:choices, a, hint:h};
+                    alert('Acertijo actualizado');
+                    document.getElementById('new-q').value='';
+                    document.getElementById('new-a').value='';
+                    document.getElementById('new-w1').value='';
+                    document.getElementById('new-w2').value='';
+                    document.getElementById('new-hint').value='';
+                    saveBtn.onclick = addNewPuzzle; // restaurar función original
+                    updatePuzzleList();
+                } else alert('Completa todos los campos');
+            }
+        }
+        li.appendChild(editBtn);
+
+        // Botón Eliminar
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Eliminar';
+        delBtn.onclick = () => {
+            puzzles.splice(i, 1);
+            updatePuzzleList();
+        }
+        li.appendChild(delBtn);
+
+        list.appendChild(li);
+    });
+}
+
 function showScreen(scr){
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('add-screen').classList.add('hidden');
