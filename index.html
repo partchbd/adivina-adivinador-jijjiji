@@ -184,12 +184,21 @@ saveBtn.onclick = ()=>{
 
 // --- Funciones ---
 function showScreen(scr){
-    document.getElementById('start-screen').classList.add('hidden');
-    document.getElementById('add-screen').classList.add('hidden');
-    document.getElementById('game-screen').classList.add('hidden');
-    if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
-    else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
-    else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
+    const start = document.getElementById('start-screen');
+    const add = document.getElementById('add-screen');
+    const game = document.getElementById('game-screen');
+
+    start.classList.add('hidden');
+    add.classList.add('hidden');
+    game.classList.add('hidden');
+
+    if(scr==='start') start.classList.remove('hidden');
+    else if(scr==='add') add.classList.remove('hidden');
+    else if(scr==='game') {
+        game.classList.remove('hidden');
+        // Asegurarse que el start-screen ya no bloquea
+        start.style.display='none';
+    }
 }
 
 function startGame(){
