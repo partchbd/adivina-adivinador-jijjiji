@@ -42,26 +42,24 @@ button {
     max-width: 320px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
 }
-
-
-/* 3. BOTONES DE OPCIONES (RESPUESTAS) CON DEGRADADO SUAVE */
 #choices button {
-    background-image: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%); /* Blanco degradado */
-    color: #4f46e5; 
+    /* Degradado de Morado Suave a Oscuro (Mismo que los botones principales) */
+    background-image: linear-gradient(145deg, #7d6ce7 0%, #5c4acd 100%);
+    color: white; 
+    font-weight: 700;
     padding: 10px 20px;
     margin: 8px;
-    border-radius: 20px; 
+    border-radius: 20px; /* Mantenemos el estilo píldora/pastilla */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
     width: auto; 
     display: inline-block; 
-
 }
-
-choices button:hover {
-    background-image: linear-gradient(145deg, #f0f0f0 0%, #dddddd 100%);
+#choices button:hover {
+    /* Al pasar el ratón, se hace un poco más oscuro */
+    background-image: linear-gradient(145deg, #7365ce 0%, #5644ce 100%);
     transform: translateY(-1px) scale(1.03); 
     box-shadow: 0 6px 12px rgba(0,0,0,0.5);
 }
-
 /* Estilo para el GIF del título (Limpio y correcto) */
 
 .title-gif {
