@@ -57,12 +57,17 @@ body {
 #start-btn, #next-btn, #hint-btn, #back-btn, #back-game-btn {
     background: #6b63ff; /* Este es el morado que ya usas */
     color: white;
-    
-    
+   
    
 }
 .title-gif {
-    /* Puedes ajustar el valor '150px' si quieres que sea más grande o más pequeño */
+     /* Tamaño */
+    max-width: 150px; 
+    height: auto; 
+    
+    /* Centrado */
+    display: block; 
+    margin: 0 auto 10px auto; /* 0 arriba, auto lados (centrado), 10px abajo */   /* Puedes ajustar el valor '150px' si quieres que sea más grande o más pequeño */
     max-width: 150px; 
     height: auto; 
     margin-bottom: 10px; 
@@ -141,8 +146,8 @@ button:hover {
 
 <!-- PANTALLA INICIO -->
 <div id="start-screen" class="card">
-    
-    
+    <img src="logo.png.gif" alt="Animación de inicio" class="title-gif"> 
+    ti
     <h1>Divina Adivinador ✨🧩</h1>
     <p>¡Prueba tus acertijos! 🧠</p>
     
