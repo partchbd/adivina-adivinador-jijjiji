@@ -10,79 +10,69 @@
 <style>
 
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    background: url('ghh.jpeg') no-repeat center center;
-    background-size: cover;
-    color: #ffffff;
+    font-family: 'Poppins', sans-serif; /* <-- Fuente aplicada */
+    margin: 0;
+    padding: 0;
+    text-align: center; /* <-- TODO centrado */
+    background: url('ghh.jpeg') no-repeat center center; /* <-- Fondo aplicado */
+    background-size: cover;
+    color: #ffffff;
 }
-
-/* 1. ELIMINAMOS EL RECUADRO NEGRO (.card) */
 .card {
-    background: none; /* Fondo transparente */
-    box-shadow: none; /* Sin sombra */
-    padding: 20px;
-    border-radius: 15px;
-    margin: 20px auto;
-    max-width: 400px;
+    background: none; 
+    box-shadow: none; 
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 400px;
 }
 
-/* Ocultar elementos */
 .hidden { display: none !important; }
-
-/* 2. MEJORAS GENERALES Y TAMAÑO DE BOTONES */
 button {
-    cursor: pointer;
-    border: none;
-    border-radius: 12px; /* Más suave */
-    padding: 12px 30px; /* Más grande */
-    margin: 10px 0;
-    transition: all 0.3s ease-in-out;
-    font-size: 1.2em; 
-    font-weight: 700; /* Texto más legible */
-    display: block; 
-    width: 90%; /* Más ancho */
-    max-width: 320px;
-    margin-left: auto;
-    margin-right: auto; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra estándar para flotar */
+    cursor: pointer;
+    border: none;
+    border-radius: 12px; 
+    padding: 12px 30px; 
+    margin: 10px auto;
+    transition: all 0.3s ease-in-out;
+    font-size: 1.2em; 
+    font-weight: 700; 
+    display: block; 
+    width: 90%; 
+    max-width: 320px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
 }
+
 
 /* 3. BOTONES DE OPCIONES (RESPUESTAS) CON DEGRADADO SUAVE */
 #choices button {
-    /* Degradado blanco a gris muy suave */
-    background-image: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
-    color: #4f46e5; /* Texto morado */
-    font-weight: 700;
-    padding: 10px 20px;
-    margin: 8px;
-    border-radius: 20px; /* Estilo píldora */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
-    width: auto; 
-    display: inline-block; 
+    background-image: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%); /* Blanco degradado */
+    color: #4f46e5; 
+    padding: 10px 20px;
+    margin: 8px;
+    border-radius: 20px; 
+    width: auto; 
+    display: inline-block; 
+
 }
 
-#choices button:hover {
-    /* Hover oscurece el degradado suavemente */
+choices button:hover {
     background-image: linear-gradient(145deg, #f0f0f0 0%, #dddddd 100%);
-    transform: translateY(-1px) scale(1.03); 
-    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    transform: translateY(-1px) scale(1.03); 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
 }
 
 /* Estilo para el GIF del título (Limpio y correcto) */
-.title-gif {
-    max-width: 150px; 
-    height: auto; 
-    display: block; 
-    margin: 0 auto 10px auto; 
-}
 
-/* El efecto hover para botones NO de opción (next, hint, inicio, etc.) */
+.title-gif {
+    max-width: 150px; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto 10px auto; 
+}
 button:hover { 
-    transform: scale(1.05); 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.4); 
+    transform: scale(1.05); 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4); 
 }
 
 /* Deshabilitar botones después de responder */
@@ -118,35 +108,35 @@ button:hover {
     color: white; 
 }
 
-/* --- Inicio --- */
 #start-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-    padding: 20px;
-    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    padding: 20px;
+    box-sizing: border-box;
 }
-#start-screen .logo {
-    font-size: 3em;
-    font-weight: 800;
-    margin-bottom: 20px;
-} /* <-- LLAVE DE CIERRE CORREGIDA */
 
+
+#start-screen .logo {
+    font-size: 3em;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
 #start-screen p { font-size: 1.5em; margin-bottom: 30px; }
+
 
 
 /* Pista */
 .hint {
-    background:#fff7ed;
-    border-left:4px solid #f59e0b;
-    padding:5px;
-    margin:5px;
-    border-radius:6px;
-    color:#000;
-} 
+    background:#fff7ed;
+    border-left:4px solid #f59e0b;
+    padding:5px;
+    margin:5px;
+    border-radius:6px;
+    color:#000;
 
 </style>
 </head>
