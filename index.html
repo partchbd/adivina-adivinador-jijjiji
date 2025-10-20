@@ -33,25 +33,30 @@ body {
 /* Botones generales */
 /* Botones generales */
 /* Botones generales (se aplica a TODOS los botones por defecto) */
-button {
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 5px;
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-    color: white; 
-    /* Fondo sólido por defecto para botones de acción (pista, siguiente, etc.) */
-    background: #3c90b7; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+/* Dentro de tu bloque <style> */
+
+/* Estilos para los botones de opciones */
+#choices button {
+    background-color: #89a0ff; /* Un morado más claro o el mismo de tus otros botones */
+    color: white;
+    font-weight: 600; /* Hace el texto un poco más grueso */
+    padding: 12px 25px; /* Ajusta el padding para que se vean más grandes */
+    margin: 8px; /* Espacio entre botones */
+    border-radius: 12px; /* Bordes un poco más redondeados */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra suave */
+    transition: all 0.2s ease-in-out; /* Transición para efectos hover */
 }
 
+#choices button:hover {
+    background-color: #4af9ff; /* Color al pasar el ratón por encima */
+    transform: translateY(-2px) scale(1.02); /* Pequeño efecto de "levitación" */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
 
-#choices button {
-    
-    background-image: linear-gradient(135deg, #3935ab 0%, #855da7 100%); /* Azul a Púrpura */
-    background-color: transparent; /* Necesario para que el degradado se vea */
+/* Puedes ajustar el color de los botones principales si quieres que coincidan */
+#start-btn, #next-btn, #hint-btn, #back-btn, #back-game-btn {
+    background: #6b63ff; /* Este es el morado que ya usas */
+    color: white;
 }
 /* ----------------------------------------------------------------- */
 
@@ -76,7 +81,7 @@ button:hover {
 
 /* Colores de botones de inicio/agregar (Mantienen el estilo sólido o el que tenías) */
 #start-btn { background: #63daef; color: white; }
-#add-btn { background: #f59e0b; color: white; }
+#add-btn { background: #0ba7f5; color: white; }
 
 /* Inputs agregar */
 #add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px; color: #000;}
