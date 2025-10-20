@@ -1,406 +1,121 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Divina Adivinador</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Desafío Estratégico: ¡El Nexo te Espera!</title>
+    <style>
+  
+    /* --- ESTILO MOBA / HISTORIA --- */
+    body { 
+        font-family: 'Georgia', serif; /* Tipo de letra más histórico */
+        
+        /* 💥 CAMBIO A IMAGEN DE FONDO */
+        background-image: url('fondo.jpeg'); 
+        background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+        background-repeat: no-repeat; /* Evita que la imagen se repita */
+        background-attachment: fixed; /* Mantiene la imagen fija */
+        background-color: #1a1a2e; /* Color de respaldo por si la imagen no carga */
+        
+        color: #ffffff; /* Letras blancas */
+        text-align: center;
+        padding: 20px;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        h1 {
+            color: #e94560; /* Color de acento */
+            border-bottom: 2px solid #e94560;
+            padding-bottom: 10px;
+        }
 
-<style>
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    background: url('ghh.jpeg') no-repeat center center;
-    background-size: cover;
-    color: #ffffff;
-}
-/* Pantallas en “tarjetas” */
-.card {
-    background: rgba(0,0,0,0.6);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    margin: 20px auto;
-    max-width: 400px;
-}
+        /* ESTADO DEL NEXO (Barra de Vida) */
+        #nexo-vida {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px auto;
+            border: 3px solid #00ff88; /* Borde verde brillante */
+            padding: 15px;
+            width: 80%;
+            max-width: 400px;
+            background-color: #2c2c47;
+            border-radius: 8px;
+            transition: all 0.5s ease; /* Transición para cuando reciba daño */
+        }
+        
+        #nexo-vida.alerta {
+             /* Estilo cuando la vida es baja */
+            border-color: #ffcc00; 
+            color: #ffcc00;
+        }
+        
+        #nexo-vida.destruido {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
 
-/* Ocultar elementos */
-.hidden { display: none !important; }
+        /* CONTENEDOR DE PREGUNTAS */
+        #contenedor-pregunta {
+            background-color: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
 
-/* Botones generales */
-button {
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 5px;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-button:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        #texto-pregunta {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            color: #aae0ff;
+        }
 
-/* Correcto / Incorrecto */
-.correct { background:#22c55e; color:white; }
-.wrong { background:#ef4444; color:white; }
+        /* ESTILO DE OPCIONES (Botones de Estrategia) */
+        .opcion {
+            background-color: #3f72af; /* Color de botón principal */
+            color: #ffffff;
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block; /* Opciones una debajo de la otra */
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color 0.2s, transform 0.1s;
+        }
 
-/* Pista */
-
-.hint {
-    background:#fff7ed;
-    border-left:4px solid #f59e0b;
-    padding:5px;
-    margin:5px;
-    border-radius:6px;
-    color:#000;
-} /* <-- ¡Asegúrate de que esta llave de cierre esté ahí! */
-/* --- Inicio --- */
-#start-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-    padding: 20px;
-    box-sizing: border-box;
-}
-#start-screen .logo {
-    font-size: 3em;
-    font-weight: 800;
-    margin-bottom: 20px;
-}
-#start-screen p { font-size: 1.5em; margin-bottom: 30px; }
-
-/* Colores de botones */
-#start-btn { background: #4f46e5; color: white; }
-#add-btn { background: #f59e0b; color: white; }
-
-/* Inputs agregar */
-#add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px;}
-</style>
+        .opcion:hover { 
+            background-color: #1e3f6e; /* Un poco más oscuro al pasar el ratón */
+            transform: scale(1.02);
+        }
+        
+        /* RESULTADOS Y MENSAJES */
+        #mensaje-resultado {
+            font-size: 1.1em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .mensaje-victoria { color: #00ff88; }
+        .mensaje-derrota { color: #ff0000; }
+        
+    </style>
 </head>
 <body>
 
-<!-- PANTALLA INICIO -->
-<div id="start-screen">
-    <h1 class="logo">🌟 Divina Adivinador 🌟</h1>
-    <p>Prueba tus acertijos 🧠</p>
-    <button id="start-btn">¡Comenzar!</button>
-    <button id="add-btn">Agregar Acertijo</button>
-</div>
+    <h1>⚔️ El Desafío de la Historia y la Estrategia 🛡️</h1>
 
-<!-- PANTALLA AGREGAR -->
-<div id="add-screen" class="card hidden">
-    <h2>Agregar nuevo acertijo</h2>
-    <input id="new-q" placeholder="Pregunta" />
-    <input id="new-a" placeholder="Respuesta correcta" />
-    <input id="new-w1" placeholder="Respuesta incorrecta 1" />
-    <input id="new-w2" placeholder="Respuesta incorrecta 2" />
-    <input id="new-hint" placeholder="Pista (opcional)" />
-    <h3>Acertijos guardados</h3>
-    <ul id="puzzle-list"></ul>
+    <div id="nexo-vida">Vida del Nexo: 100</div>
 
-    <br>
-    <button id="save-btn">Guardar</button>
-    <button id="back-btn">Volver</button>
-    <button id="reset-btn" style="background: #ef4444; color: white;">🚨 Restablecer Acertijos de Fábrica</button>
-</div>
-
-<!-- PANTALLA JUEGO -->
-<div id="game-screen" class="card hidden">
-    <div id="progress"></div>
-    <div id="question" style="font-weight:bold;"></div>
-    <div id="choices"></div>
-    <p id="message"></p>
-    <p id="hint" class="hint hidden"></p>
-    <p>Puntaje: <span id="score">0</span> | Vidas: <span id="lives">💖💖💖</span></p>
-    <button id="hint-btn">Mostrar pista</button>
-    <button id="next-btn" disabled>Siguiente</button>
-    <button id="back-game-btn">Volver al inicio</button>
-</div>
-
-<script>
-// --- DATOS INICIALES Y CARGA ---
-// 1. Lista de acertijos predeterminada (de fábrica)
-const initialPuzzles = [
-    {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
-    {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
-    {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
-    {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.',c:['pera','manzana','plátano'],a:'pera',hint:'Es una fruta'},
-    {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?',c:['1 minuto','5 minutos','10 minutos'],a:'5 minutos',hint:'Piensa en la proporción'},
-    {q:'Tiene agujas pero no pincha. ¿Qué es?',c:['reloj','erizo','pino'],a:'reloj',hint:'Mide el tiempo'},
-    {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?',c:['hoyo','caja','montaña'],a:'hoyo',hint:'Piensa en cavar'},
-    {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?',c:['planta','fuego','nube'],a:'fuego',hint:'Consume oxígeno'},
-    {q:'Tiene llaves pero no abre puertas. ¿Qué es?',c:['piano','candado','mapa'],a:'piano',hint:'Se toca con las manos'},
-    {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
-    {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
-];
-
-let puzzles = [];
-
-// Función para cargar los datos (se ejecuta al inicio y al resetear)
-function loadPuzzles() {
-    if (localStorage.getItem('puzzles')) {
-        // Carga los acertijos que el usuario ha editado/añadido/eliminado
-        puzzles = JSON.parse(localStorage.getItem('puzzles'));
-    } else {
-        // Carga los acertijos iniciales y los guarda por primera vez
-        puzzles = [...initialPuzzles]; // Usa el spread para hacer una copia
-        localStorage.setItem('puzzles', JSON.stringify(puzzles));
-    }
-}
-loadPuzzles(); // Ejecuta la carga al iniciar
-
-let index=0, score=0, lives=3;
-
-// --- ELEMENTOS ---
-const startBtn=document.getElementById('start-btn');
-const addBtn=document.getElementById('add-btn');
-const saveBtn=document.getElementById('save-btn');
-const backBtn=document.getElementById('back-btn');
-const backGameBtn=document.getElementById('back-game-btn');
-const nextBtn=document.getElementById('next-btn');
-const hintBtn=document.getElementById('hint-btn');
-const resetBtn=document.getElementById('reset-btn'); // Nuevo elemento
-
-// --- EVENTOS ---
-startBtn.onclick = ()=>{ showScreen('game'); startGame(); };
-addBtn.onclick = ()=>{ showScreen('add'); updatePuzzleList(); }; 
-backBtn.onclick = ()=>{ showScreen('start'); };
-backGameBtn.onclick = ()=>{ showScreen('start'); };
-
-// Evento para el nuevo botón de reseteo
-resetBtn.onclick = resetToFactory;
-
-// Asignar función de guardar por defecto (añadir nuevo)
-saveBtn.onclick = addNewPuzzle;
-
-function addNewPuzzle(){
-    const q=document.getElementById('new-q').value.trim();
-    const a=document.getElementById('new-a').value.trim();
-    const w1=document.getElementById('new-w1').value.trim();
-    const w2=document.getElementById('new-w2').value.trim();
-    const h=document.getElementById('new-hint').value.trim();
-    if(q && a && w1 && w2){
-        let choices=[a,w1,w2];
-        choices.sort(()=>Math.random()-0.5); 
-        puzzles.push({q:q,c:choices,a:a,hint:h});
-        
-        localStorage.setItem('puzzles', JSON.stringify(puzzles));
-        
-        alert('Acertijo guardado');
-        document.getElementById('new-q').value='';
-        document.getElementById('new-a').value='';
-        document.getElementById('new-w1').value='';
-        document.getElementById('new-w2').value='';
-        document.getElementById('new-hint').value='';
-        
-        updatePuzzleList(); 
-    } else alert('Completa todos los campos');
-}
-
-// Función para restablecer todos los acertijos
-function resetToFactory() {
-    if(confirm('🚨 ADVERTENCIA: ¿Estás seguro de que quieres restablecer la lista de acertijos a la versión original de fábrica? Perderás todos los acertijos que hayas agregado o editado.')){
-        localStorage.removeItem('puzzles'); // Elimina los datos guardados
-        loadPuzzles(); // Vuelve a cargar la lista de fábrica y la guarda
-        alert('Acertijos restablecidos a la configuración de fábrica.');
-        updatePuzzleList();
-    }
-}
-
-// --- FUNCIONES DE GESTIÓN (Editar/Eliminar) ---
-function updatePuzzleList() {
-    const list = document.getElementById('puzzle-list');
-    list.innerHTML = '';
-    // Resetea la función de guardar a la original por si se estaba editando
-    saveBtn.onclick = addNewPuzzle;
-
-    puzzles.forEach((p, i) => {
-        const li = document.createElement('li');
-        li.style.textAlign = 'left';
-        li.style.marginTop = '10px';
-        li.style.borderBottom = '1px dashed #ccc';
-        li.style.paddingBottom = '5px';
-        li.style.fontSize = '14px';
-
-        const text = document.createElement('span');
-        text.textContent = p.q;
-        li.appendChild(text);
-
-        const btnContainer = document.createElement('div');
-        btnContainer.style.display = 'block'; 
-        btnContainer.style.marginTop = '5px';
-
-        // Botón Editar
-        const editBtn = document.createElement('button');
-        editBtn.textContent = '✏️ Editar';
-        editBtn.style.fontSize = '12px';
-        editBtn.style.padding = '5px 8px';
-        editBtn.style.marginRight = '5px';
-        editBtn.style.background = '#4f46e5';
-        editBtn.style.color = 'white';
-        editBtn.onclick = () => {
-            document.getElementById('new-q').value = p.q;
-            document.getElementById('new-a').value = p.a;
-            
-            const incorrectas = p.c.filter(c => c.toLowerCase() !== p.a.toLowerCase());
-            document.getElementById('new-w1').value = incorrectas[0] || '';
-            document.getElementById('new-w2').value = incorrectas[1] || '';
-            
-            document.getElementById('new-hint').value = p.hint || '';
-            
-            alert(`Editando: ${p.q}`);
-
-            saveBtn.onclick = () => {
-                const q = document.getElementById('new-q').value.trim();
-                const a = document.getElementById('new-a').value.trim();
-                const w1 = document.getElementById('new-w1').value.trim();
-                const w2 = document.getElementById('new-w2').value.trim();
-                const h = document.getElementById('new-hint').value.trim();
-                if(q && a && w1 && w2){
-                    let choices = [a, w1, w2];
-                    choices.sort(()=>Math.random()-0.5);
-                    puzzles[i] = {q, c:choices, a, hint:h};
-                    localStorage.setItem('puzzles', JSON.stringify(puzzles)); 
-                    
-                    alert('Acertijo actualizado. Vuelve a la pantalla inicial.');
-                    document.getElementById('new-q').value='';
-                    document.getElementById('new-a').value='';
-                    document.getElementById('new-w1').value='';
-                    document.getElementById('new-w2').value='';
-                    document.getElementById('new-hint').value='';
-                    saveBtn.onclick = addNewPuzzle; 
-                    updatePuzzleList();
-                } else alert('Completa todos los campos');
-            }
-        }
-        btnContainer.appendChild(editBtn);
-
-        // Botón Eliminar
-        const delBtn = document.createElement('button');
-        delBtn.textContent = '🗑️ Eliminar';
-        delBtn.style.fontSize = '12px';
-        delBtn.style.padding = '5px 8px';
-        delBtn.style.background = '#ef4444';
-        delBtn.style.color = 'white';
-        delBtn.onclick = () => {
-            if(confirm(`¿Estás seguro de que quieres eliminar el acertijo: "${p.q}"?`)){
-                puzzles.splice(i, 1);
-                localStorage.setItem('puzzles', JSON.stringify(puzzles)); 
-                alert('Acertijo eliminado.');
-                updatePuzzleList();
-            }
-        }
-        btnContainer.appendChild(delBtn);
-        
-        li.appendChild(btnContainer);
-        list.appendChild(li);
-    });
-}
-
-
-function showScreen(scr){
-    const hintElement = document.getElementById('hint');
+    <div id="contenedor-pregunta">
+        <p id="texto-pregunta">Cargando pregunta...</p>
+        <div id="contenedor-opciones">
+            </div>
+    </div>
     
-    // ✅ OCULTAR y LIMPIAR el elemento de la pista al cambiar de pantalla
-    hintElement.classList.add('hidden');
-    hintElement.textContent = ''; // Limpiar el contenido para evitar fantasmas de texto
-    
-    document.getElementById('start-screen').classList.add('hidden');
-    document.getElementById('add-screen').classList.add('hidden');
-    document.getElementById('game-screen').classList.add('hidden');
-    
-    if(scr==='start') document.getElementById('start-screen').classList.remove('hidden');
-    else if(scr==='add') document.getElementById('add-screen').classList.remove('hidden');
-    else if(scr==='game') document.getElementById('game-screen').classList.remove('hidden');
-}
+    <p id="mensaje-resultado"></p>
 
-
-function startGame(){
-    score=0; lives=3; index=0;
-    puzzles.sort(()=>Math.random()-0.5); 
-    updateStats();
-    showQ();
-}
-
-function showQ(){
-    const q=puzzles[index];
-    document.getElementById('message').textContent='';
-    document.getElementById('hint').classList.add('hidden'); 
-    
-    document.getElementById('question').textContent=q.q;
-
-    const cDiv=document.getElementById('choices');
-    cDiv.innerHTML='';
-    nextBtn.disabled=true;
-
-    q.c.sort(()=>Math.random()-0.5); 
-
-    q.c.forEach(ch=>{
-        const b=document.createElement('button');
-        b.textContent=ch;
-        b.onclick=()=>check(ch);
-        cDiv.appendChild(b);
-    });
-
-    document.getElementById('progress').textContent = `Pregunta ${index+1} de ${puzzles.length}`;
-    hintBtn.style.display = q.hint ? 'inline-block' : 'none';
-}
-
-function check(ans){
-    const q = puzzles[index];
-    const msg = document.getElementById('message');
-
-    document.querySelectorAll('#choices button').forEach(b => b.disabled = true);
-
-    if(ans.toLowerCase() === q.a.toLowerCase()){
-        score += 10;
-        msg.textContent = '✅ Correcto!';
-        msg.className='correct';
-    } else {
-        lives--;
-        msg.textContent = '❌ Incorrecto. La respuesta correcta era: ' + q.a;
-        msg.className='wrong';
-        if(lives <= 0){
-            alert('¡Has perdido todas tus vidas! Puntaje final: '+score);
-            showScreen('start');
-            return;
-        }
-    }
-    updateStats();
-    nextBtn.disabled=false;
-}
-
-nextBtn.onclick = ()=>{
-    index++;
-    if(index >= puzzles.length){
-        alert('¡Juego terminado! Puntaje final: '+score);
-        showScreen('start');
-    } else showQ();
-}
-
-hintBtn.onclick = ()=>{
-    document.getElementById('hint').textContent='💡 Pista: '+puzzles[index].hint;
-    document.getElementById('hint').classList.remove('hidden');
-}
-
-function updateStats(){
-    document.getElementById('score').textContent = score;
-    let hearts='';
-    for(let i=0;i<lives;i++){ hearts+='💖'; }
-    document.getElementById('lives').textContent = hearts;
-}
-
-// INICIA EN PANTALLA INICIO
-showScreen('start');
-</script>
-</script>
-
+    <script src="juego.js"></script>
 </body>
 </html>
-
-
