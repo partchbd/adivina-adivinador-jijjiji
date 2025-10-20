@@ -19,7 +19,10 @@ body {
     color: #ffffff;
 }
 
+/* 1. ELIMINAMOS EL RECUADRO NEGRO (.card) */
 .card {
+    background: none; /* Fondo transparente */
+    box-shadow: none; /* Sin sombra */
     padding: 20px;
     border-radius: 15px;
     margin: 20px auto;
@@ -29,39 +32,43 @@ body {
 /* Ocultar elementos */
 .hidden { display: none !important; }
 
-/* Botones generales (se aplica a TODOS los botones por defecto) */
+/* 2. MEJORAS GENERALES Y TAMAÑO DE BOTONES */
 button {
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    margin: 10px 0;
-    transition: all 0.2s ease-in-out;
-    font-size: 1.1em;
-    font-weight: bold;
-    display: block; /* Para que ocupen su propia línea */
-    width: 80%; /* Ancho adecuado */
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto; /* Centrado horizontal */
+    cursor: pointer;
+    border: none;
+    border-radius: 12px; /* Más suave */
+    padding: 12px 30px; /* Más grande */
+    margin: 10px 0;
+    transition: all 0.3s ease-in-out;
+    font-size: 1.2em; 
+    font-weight: 700; /* Texto más legible */
+    display: block; 
+    width: 90%; /* Más ancho */
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra estándar para flotar */
 }
 
-/* Estilos para los botones de opciones (respuestas) */
+/* 3. BOTONES DE OPCIONES (RESPUESTAS) CON DEGRADADO SUAVE */
 #choices button {
-    background-color: #89a0ff;
-    color: white;
-    padding: 12px 25px;
+    /* Degradado blanco a gris muy suave */
+    background-image: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+    color: #4f46e5; /* Texto morado */
+    font-weight: 700;
+    padding: 10px 20px;
     margin: 8px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    width: auto; /* Permite que se ajusten al contenido */
-    display: inline-block; /* Para que estén uno al lado del otro */
+    border-radius: 20px; /* Estilo píldora */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
+    width: auto; 
+    display: inline-block; 
 }
 
 #choices button:hover {
-    background-color: #485dd3;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    /* Hover oscurece el degradado suavemente */
+    background-image: linear-gradient(145deg, #f0f0f0 0%, #dddddd 100%);
+    transform: translateY(-1px) scale(1.03); 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
 }
 
 /* Estilo para el GIF del título (Limpio y correcto) */
@@ -69,7 +76,7 @@ button {
     max-width: 150px; 
     height: auto; 
     display: block; 
-    margin: 0 auto 10px auto; /* Centrado y espacio debajo */
+    margin: 0 auto 10px auto; 
 }
 
 /* El efecto hover para botones NO de opción (next, hint, inicio, etc.) */
@@ -90,15 +97,26 @@ button:hover {
 .correct { background:#22c55e !important; color:white !important; background-image: none !important; }
 .wrong { background:#ef4444 !important; color:white !important; background-image: none !important; }
 
-/* Colores de botones de inicio/agregar (Restaurados a los de la Captura 1) */
-#start-btn { background: #6b63ff; color: white; }
-#add-btn { background: #f59e0b; color: white; }
+/* 4. COLORES CON DEGRADADO PARA BOTONES PRINCIPALES */
+/* Botón "Comenzar" */
+#start-btn { 
+    background-image: linear-gradient(145deg, #6a5acd 0%, #483d8b 100%); /* Morado a Morado Oscuro */
+    color: white; 
+}
+/* Botón "Agregar Acertijo" */
+#add-btn { 
+    background-image: linear-gradient(145deg, #ffc400 0%, #ff9800 100%); /* Naranja a Amarillo */
+    color: #4a4a4a; /* Texto oscuro */
+}
 
 /* Inputs agregar */
 #add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px; color: #000;}
 
-/* Aseguramos que los botones de acción mantengan el color sólido si el estilo general fue modificado */
-#save-btn, #back-btn, #next-btn, #hint-btn, #back-game-btn { background: #4f46e5; color: white; }
+/* Botones de acción (Guardar, Volver, Siguiente, Pista) */
+#save-btn, #back-btn, #next-btn, #hint-btn, #back-game-btn { 
+    background-image: linear-gradient(145deg, #6a5acd 0%, #483d8b 100%); /* Morado a Morado Oscuro */
+    color: white; 
+}
 
 /* --- Inicio --- */
 #start-screen {
@@ -114,19 +132,21 @@ button:hover {
 #start-screen .logo {
     font-size: 3em;
     font-weight: 800;
-    margin-bottom: 20px;}
+    margin-bottom: 20px;
+} /* <-- LLAVE DE CIERRE CORREGIDA */
 
 #start-screen p { font-size: 1.5em; margin-bottom: 30px; }
 
-/* Colores de botones */
-#start-btn { background: #4f46e5; color: white; }
-#add-btn { background: #f59e0b; color: white; }
 
-/* Inputs agregar */
-#add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px;}
-
-#save-btn, #back-btn, #next-btn, #hint-btn, #back-game-btn { background: #4f46e5; color: white; }
-
+/* Pista */
+.hint {
+    background:#fff7ed;
+    border-left:4px solid #f59e0b;
+    padding:5px;
+    margin:5px;
+    border-radius:6px;
+    color:#000;
+} 
 
 </style>
 </head>
