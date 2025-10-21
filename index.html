@@ -16,6 +16,7 @@ body {
     text-align: center; /* <-- TODO centrado */
     background: url('ghh.jpeg') no-repeat center center; /* <-- Fondo aplicado */
     background-size: cover;
+    background-attachment: fixed;
     color: #ffffff;
 }
 .card {
@@ -31,30 +32,21 @@ body {
 button {
     cursor: pointer;
     border: none;
-    border-radius: 12px; 
-    padding: 12px 30px; 
-    margin: 10px auto; 
-    transition: all 0.3s ease-in-out;
-    font-size: 1.2em; 
-    font-weight: 700; 
-    display: block; 
-    width: 90%; 
-    max-width: 320px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 5px;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
     color: white; 
-    }
-#choices button {
-    /* Degradado de Morado Suave a Oscuro (Mismo que los botones principales) */
-    background-image: linear-gradient(145deg, #7d6ce7 0%, #5c4acd 100%);
-    color: white; 
-    font-weight: 700;
-    padding: 12px 25px;
-    margin: 8px;
-    border-radius: 12px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
-    width: auto; 
-    display: inline-block; 
+    /* Fondo sólido por defecto para botones de acción (pista, siguiente, etc.) */
+    background: #4f46e5; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
+
+    
+#choices button {
+    background-image: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%); /* Azul a Púrpura */
+    background-color: transparent; /*
 #choices button:hover {
     /* Al pasar el ratón, se hace un poco más oscuro */
     background-image: linear-gradient(145deg, #7365ce 0%, #5644ce 100%);
@@ -88,17 +80,10 @@ button:hover {
 
 /* 4. COLORES CON DEGRADADO PARA BOTONES PRINCIPALES */
 /* Botón "Comenzar" */
-#start-btn { 
-    background-image: linear-gradient(145deg, #e0b0ff 0%, #a450ff 40%, #7e3ff2 75%, #3d0087 100%);
-
-    color: white; 
-}
+#start-btn {   background: #4f46e5; color: white; }
 /* Botón "Agregar Acertijo" */
-#add-btn { 
-   background-image: linear-gradient(145deg, #ffffc2 0%, #ffc107 40%, #ff8c00 75%, #d45e00 100%);
-        color: #4a4a4a;   
-    border-radius: 12px; /* Asegura la forma rectangular suave */
-}
+#add-btn { background: #f59e0b; color: white; }
+ 
 
 /* Inputs agregar */
 #add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px; color: #000;}
