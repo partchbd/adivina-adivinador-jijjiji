@@ -171,8 +171,7 @@ button:hover {
 <script>
 // --- DATOS INICIALES Y CARGA ---
 // 1. Lista de acertijos predeterminada (de fábrica)
-const initialPuzzles = 
-  let puzzles = JSON.parse(localStorage.getItem('puzzles')) || [
+const initialPuzzles = JSON.parse(localStorage.getItem('puzzles')) || [
   {q:'6+3=?', c:['8','9','10'], a:'9', hint:'Piensa en tus dedos'},
   {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?', c:['nube','sol','lluvia'], a:'nube', hint:'Está en el cielo'},
   {q:'2,4,8,16...?', c:['24','32','30'], a:'32', hint:'Se duplica cada vez'},
@@ -235,7 +234,7 @@ resetBtn.onclick = resetToFactory;
 // Asignar función de guardar por defecto (añadir nuevo)
 saveBtn.onclick = addNewPuzzle;
 
-function addNewPuzzle(){
+function addNewPuzzle(){Z
     const q=document.getElementById('new-q').value.trim();
     const a=document.getElementById('new-a').value.trim();
     const w1=document.getElementById('new-w1').value.trim();
