@@ -30,19 +30,17 @@ body {
 
 .hidden { display: none !important; }
 button {
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 5px;
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-    color: white; 
-    /* Fondo sólido por defecto para botones de acción (pista, siguiente, etc.) */
-    background: #4f46e5; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 5px;
+  color: white;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
 }
-
     
 #choices button {
     background-image: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%); /* Azul a Púrpura */
@@ -61,9 +59,10 @@ button {
     display: block; 
     margin: 0 auto 10px auto; 
 }
-button:hover { 
-    transform: scale(1.05); 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.4); 
+button:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #6366f1, #a855f7);
 }
 
 /* Deshabilitar botones después de responder */
@@ -425,11 +424,17 @@ function check(ans){
 
 nextBtn.onclick = ()=>{
     index++;
-    if(index >= puzzles.length){
-        alert('¡Juego terminado! Puntaje final: '+score);
+    if (index >= puzzles.length) {
+        alert('¡Juego terminado! Puntaje: ' + score);
         showScreen('start');
-    } else showQ();
+        index = 0; // 🔹 Reinicia el contador por si agregas más acertijos luego
+    } else {
+        document.getElementById('hint').classList.add('hidden'); // 🔹 Oculta la pista al pasar
+        document.getElementById('hint').textContent = ''; // 🔹 Limpia el texto de la pista
+        showQ();
+    }
 }
+
 
 hintBtn.onclick = ()=>{
     document.getElementById('hint').textContent='💡 Pista: '+puzzles[index].hint;
