@@ -171,21 +171,32 @@ button:hover {
 <script>
 // --- DATOS INICIALES Y CARGA ---
 // 1. Lista de acertijos predeterminada (de fábrica)
-const initialPuzzles = [
-    {q:'6+3=?',c:['8','9','10'],a:'9',hint:'Piensa en tus dedos'},
-    {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?',c:['nube','sol','lluvia'],a:'nube',hint:'Está en el cielo'},
-    {q:'2,4,8,16...?',c:['24','32','30'],a:'32',hint:'Se duplica cada vez'},
-    {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.',c:['pera','manzana','plátano'],a:'pera',hint:'Es una fruta'},
-    {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?',c:['1 minuto','5 minutos','10 minutos'],a:'5 minutos',hint:'Piensa en la proporción'},
-    {q:'Tiene agujas pero no pincha. ¿Qué es?',c:['reloj','erizo','pino'],a:'reloj',hint:'Mide el tiempo'},
-    {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?',c:['hoyo','caja','montaña'],a:'hoyo',hint:'Piensa en cavar'},
-    {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?',c:['planta','fuego','nube'],a:'fuego',hint:'Consume oxígeno'},
-    {q:'Tiene llaves pero no abre puertas. ¿Qué es?',c:['piano','candado','mapa'],a:'piano',hint:'Se toca con las manos'},
-    {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?',c:['agua','jabón','trapo'],a:'trapo',hint:'Se ensucia mientras limpia'},
-    {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?',c:['murciélago','búho','lechuza'],a:'murciélago',hint:'Es nocturno'}
+const initialPuzzles = 
+  let puzzles = JSON.parse(localStorage.getItem('puzzles')) || [
+  {q:'6+3=?', c:['8','9','10'], a:'9', hint:'Piensa en tus dedos'},
+  {q:'Vuelo sin alas, lloro sin ojos. ¿Qué soy?', c:['nube','sol','lluvia'], a:'nube', hint:'Está en el cielo'},
+  {q:'2,4,8,16...?', c:['24','32','30'], a:'32', hint:'Se duplica cada vez'},
+  {q:'Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera.', c:['pera','manzana','plátano'], a:'pera', hint:'Es una fruta'},
+  {q:'Si cinco máquinas hacen cinco objetos en cinco minutos, ¿cuánto tiempo hace una máquina un objeto?', c:['1 minuto','5 minutos','10 minutos'], a:'5 minutos', hint:'Piensa en la proporción'},
+  {q:'Tiene agujas pero no pincha. ¿Qué es?', c:['reloj','erizo','pino'], a:'reloj', hint:'Mide el tiempo'},
+  {q:'Cuanto más quitas, más grande se vuelve. ¿Qué es?', c:['hoyo','caja','montaña'], a:'hoyo', hint:'Piensa en cavar'},
+  {q:'No es vivo, pero crece; no tiene boca, pero necesita agua. ¿Qué es?', c:['planta','fuego','nube'], a:'fuego', hint:'Consume oxígeno'},
+  {q:'Tiene llaves pero no abre puertas. ¿Qué es?', c:['piano','candado','mapa'], a:'piano', hint:'Se toca con las manos'},
+  {q:'Cuanto más lavo, más sucio se vuelve. ¿Qué es?', c:['agua','jabón','trapo'], a:'trapo', hint:'Se ensucia mientras limpia'},
+  {q:'Vuelo de noche, duermo en el día y cazo insectos. ¿Qué soy?', c:['murciélago','búho','lechuza'], a:'murciélago', hint:'Es nocturno'},
+  {q:'¿Qué número sigue en la secuencia 3, 6, 12, 24...?', c:['36','48','30'], a:'48', hint:'Se duplica cada vez'},
+  {q:'¿Cuál es el resultado de 7×8?', c:['54','56','64'], a:'56', hint:'Piensa en la tabla del 7'},
+  {q:'Tengo manos pero no puedo aplaudir. ¿Qué soy?', c:['reloj','persona','silla'], a:'reloj', hint:'Marca el tiempo'},
+  {q:'¿Qué pesa más: un kilo de hierro o un kilo de plumas?', c:['ninguno','el hierro','las plumas'], a:'ninguno', hint:'Pesan lo mismo'},
+  {q:'¿Qué número falta? 10, 20, 40, __, 160', c:['60','80','100'], a:'80', hint:'Se duplica'},
+  {q:'El padre de Ana tiene tres hijas: Lala, Lele y...?', c:['Lili','Lolo','Ana'], a:'Ana', hint:'Está en el enunciado'},
+  {q:'¿Cuántos meses tienen 28 días?', c:['1','12','6'], a:'12', hint:'Todos tienen al menos 28'},
+  {q:'Si 5x=20, ¿cuánto vale x?', c:['3','4','5'], a:'4', hint:'Divide ambos lados entre 5'},
+  {q:'¿Qué palabra se escribe incorrectamente en todos los diccionarios?', c:['equivocadamente','incorrectamente','error'], a:'incorrectamente', hint:'Piénsalo literal'}
+ 
 ];
 
-let puzzles = [];
+
 
 // Función para cargar los datos (se ejecuta al inicio y al resetear)
 function loadPuzzles() {
