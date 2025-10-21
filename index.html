@@ -104,8 +104,43 @@ button:hover {
 }
 
 /* Inputs agregar */
-#add-screen input { padding: 8px; width: 90%; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size:16px; color: #000;}
-
+#add-screen input { 
+    padding: 10px; 
+    width: 90%; 
+    margin: 8px auto; 
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+    font-size:16px; 
+    color: #000; /* Texto del input negro */
+    background: #e0e0e0; /* Fondo del input gris claro */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); 
+    display: block;}
+    #add-screen h2, #add-screen h3, #add-screen ul {
+   color: #ffffff;
+   }
+   #puzzle-list {
+    list-style-type: none; /* Eliminar viñetas */
+    padding: 0;
+    }
+    #puzzle-list li {
+    color: #f0f0f0; /* Color suave para los ítems de la lista */
+    text-align: left;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.2); /* Línea divisoria suave */
+    padding-bottom: 5px;
+     }
+     puzzle-list li button {
+    display: inline-block; /* Botones de editar/eliminar en línea */
+    width: auto;
+    max-width: none;
+    font-size: 0.9em;
+    padding: 5px 10px;
+    margin: 3px 5px;
+    border-radius: 8px;
+    background-image: none; /* Eliminar degradado para estos botones pequeños */
+    background-color: #5a12a7; /* Color sólido para estos pequeños */
+    box-shadow: none; 
+    }
 /* Botones de acción (Guardar, Volver, Siguiente, Pista) */
 #save-btn, #back-btn, #next-btn, #hint-btn, #back-game-btn { 
     background-image: linear-gradient(145deg, #e0b0ff 0%, #a450ff 40%, #7e3ff2 75%, #3d0087 100%);
