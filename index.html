@@ -137,7 +137,7 @@ button:hover {
     margin:5px;
     border-radius:6px;
     color:#000;
-
+}
 </style>
 </head>
 <body>
@@ -145,8 +145,8 @@ button:hover {
 <!-- PANTALLA INICIO -->
 <div id="start-screen" class="card">
     <img src="logo.png.gif" alt="Animación de inicio" class="title-gif"> 
-    ti
-    <h1>Divina Adivinador ✨🧩</h1>
+
+    <h1>✨ Divina Adivinador ✨</h1>
     <p>¡Prueba tus acertijos! 🧠</p>
     
     <button id="start-btn">¡Comenzar!</button>
@@ -265,7 +265,8 @@ function addNewPuzzle(){
 
 // Función para restablecer todos los acertijos
 function resetToFactory() {
-    if(confirm('🚨 ADVERTENCIA: ¿Estás seguro de que quieres restablecer la lista de acertijos a la versión original de fábrica? Perderás todos los acertijos que hayas agregado o editado.')){
+    if(confirm('🚨 ADVERTENCIA: ¿Estás seguro de que quieres restablecer la lista de acertijos a la versión original de fábrica? Perderás todos los acertijos que hayas agregado o editado.'))
+        {
         localStorage.removeItem('puzzles'); // Elimina los datos guardados
         loadPuzzles(); // Vuelve a cargar la lista de fábrica y la guarda
         alert('Acertijos restablecidos a la configuración de fábrica.');
