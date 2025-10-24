@@ -8,6 +8,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+    .equipo-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.equipo-box img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px; /* cuadrado con esquinas suaves */
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.equipo-box .titulo-equipo {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.equipo-box ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.equipo-box li {
+  font-size: 0.9rem;
+}
+
 
 body {
     font-family: 'Poppins', sans-serif; /* <-- Fuente aplicada */
@@ -126,6 +164,16 @@ button:hover {
 </style>
 </head>
 <body>
+    <!-- RECUADRO EQUIPO -->
+<div class="equipo-box">
+  <img src="foto.jpg" alt="Logo del equipo">
+  <h3>Equipo</h3>
+  <ul>
+    <li>Vásquez Méndez</li>
+    <li>Eymy Sánchez Silva</li>
+    <li>Andrés Alexander</li>
+  </ul>
+</div>
 
 <!-- PANTALLA INICIO -->
 <div id="start-screen" class="card">
